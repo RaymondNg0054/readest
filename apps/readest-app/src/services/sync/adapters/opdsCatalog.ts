@@ -14,6 +14,7 @@ interface UnwrappedOpdsFields {
   icon?: string;
   customHeaders?: Record<string, string>;
   autoDownload?: boolean;
+  uploadProtocol?: OPDSCatalog['uploadProtocol'];
   disabled?: boolean;
   addedAt?: number;
   sortOrder?: number;
@@ -28,6 +29,7 @@ const unwrapOpdsFields = (fields: FieldsObject): UnwrappedOpdsFields => {
   const icon = unwrap(fields['icon']);
   const customHeaders = unwrap(fields['customHeaders']);
   const autoDownload = unwrap(fields['autoDownload']);
+  const uploadProtocol = unwrap(fields['uploadProtocol']);
   const disabled = unwrap(fields['disabled']);
   const addedAt = unwrap(fields['addedAt']);
   const sortOrder = unwrap(fields['sortOrder']);
@@ -48,6 +50,8 @@ const unwrapOpdsFields = (fields: FieldsObject): UnwrappedOpdsFields => {
         ? (customHeaders as Record<string, string>)
         : undefined,
     autoDownload: autoDownload === true ? true : undefined,
+    uploadProtocol:
+      uploadProtocol === 'calibre-web' || uploadProtocol === 'none' ? uploadProtocol : undefined,
     disabled: disabled === true ? true : undefined,
     addedAt: typeof addedAt === 'number' ? addedAt : undefined,
     sortOrder: typeof sortOrder === 'number' ? sortOrder : undefined,
@@ -81,6 +85,7 @@ export const opdsCatalogAdapter: ReplicaAdapter<OPDSCatalog> = {
     if (catalog.icon !== undefined) fields['icon'] = catalog.icon;
     if (catalog.customHeaders !== undefined) fields['customHeaders'] = catalog.customHeaders;
     if (catalog.autoDownload !== undefined) fields['autoDownload'] = catalog.autoDownload;
+    if (catalog.uploadProtocol !== undefined) fields['uploadProtocol'] = catalog.uploadProtocol;
     if (catalog.disabled !== undefined) fields['disabled'] = catalog.disabled;
     if (catalog.sortOrder !== undefined) fields['sortOrder'] = catalog.sortOrder;
     // Pass credentials as plaintext here — the publish-side crypto
@@ -105,6 +110,12 @@ export const opdsCatalogAdapter: ReplicaAdapter<OPDSCatalog> = {
           ? (fields['customHeaders'] as Record<string, string>)
           : undefined,
       autoDownload: fields['autoDownload'] === true ? true : undefined,
+      uploadProtocol:
+        fields['uploadProtocol'] === 'calibre-web'
+          ? 'calibre-web'
+          : fields['uploadProtocol'] === 'none'
+            ? 'none'
+            : undefined,
       disabled: fields['disabled'] === true ? true : undefined,
       addedAt: fields['addedAt'] !== undefined ? Number(fields['addedAt']) : undefined,
       sortOrder: fields['sortOrder'] !== undefined ? Number(fields['sortOrder']) : undefined,
@@ -131,6 +142,7 @@ export const opdsCatalogAdapter: ReplicaAdapter<OPDSCatalog> = {
     if (fields.icon !== undefined) catalog.icon = fields.icon;
     if (fields.customHeaders !== undefined) catalog.customHeaders = fields.customHeaders;
     if (fields.autoDownload !== undefined) catalog.autoDownload = fields.autoDownload;
+    if (fields.uploadProtocol !== undefined) catalog.uploadProtocol = fields.uploadProtocol;
     if (fields.disabled !== undefined) catalog.disabled = fields.disabled;
     if (fields.addedAt !== undefined) catalog.addedAt = fields.addedAt;
     if (fields.sortOrder !== undefined) catalog.sortOrder = fields.sortOrder;

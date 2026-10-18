@@ -1213,7 +1213,9 @@ export async function refreshBookMetadata(fs: FileSystem, book: Book): Promise<b
     ({ book: bookDoc } = await new DocumentLoader(file).open());
     if (!bookDoc) return false;
 
-    book.metadata = bookDoc.metadata;
+    book.metadata = book.metadata?.catalogSource
+      ? { ...bookDoc.metadata, catalogSource: book.metadata.catalogSource }
+      : bookDoc.metadata;
     // PDF metaHash is salted with the original import filename (issue #5411),
     // which is lost after import — keep the value stamped at import time.
     if (book.format !== 'PDF' || !book.metaHash) {

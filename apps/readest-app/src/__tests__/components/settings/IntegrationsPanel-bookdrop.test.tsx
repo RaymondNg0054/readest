@@ -52,6 +52,17 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
+describe('IntegrationsPanel content sources', () => {
+  it('offers OPDS catalogs without a separate Calibre content source', () => {
+    render(<IntegrationsPanel />);
+    const catalogs = document.querySelector(
+      '[data-setting-id="settings.integrations.catalogs"]',
+    ) as HTMLElement;
+    expect(within(catalogs).getByRole('button', { name: /OPDS Catalogs/ })).toBeTruthy();
+    expect(within(catalogs).queryByText('Calibre')).toBeNull();
+  });
+});
+
 describe('IntegrationsPanel Nearby BookDrop section', () => {
   it('puts BookDrop in its own section ahead of every other integration', () => {
     render(<IntegrationsPanel />);

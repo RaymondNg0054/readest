@@ -4,6 +4,7 @@
 // `metadata[SYMBOL.CONTENT]` would silently return undefined — losing the book
 // description for OPDS 1.x feeds where it lives in <summary>.
 import { SYMBOL as FOLIATE_SYMBOL } from 'foliate-js/opds.js';
+import type { CatalogUploadProtocol } from './catalogUpload';
 
 export const REL = {
   ACQ: 'http://opds-spec.org/acquisition',
@@ -31,6 +32,7 @@ export interface OPDSCatalog {
   password?: string;
   customHeaders?: Record<string, string>;
   autoDownload?: boolean;
+  uploadProtocol?: 'none' | CatalogUploadProtocol;
   /**
    * Stable cross-device identifier derived from the URL. Used as the
    * replica_id so two devices that import the same OPDS URL converge to a

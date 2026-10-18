@@ -1069,6 +1069,7 @@ export default function BrowserPage() {
           return link.href && rels.some((rel) => rel.startsWith(REL.ACQ));
         })
         .map((link) => resolveURL(link.href!, state.baseURL)) ?? [];
+    if (publication?.metadata.id) sourceUrls.push(publication.metadata.id);
 
     if (libraryLoaded && appService && catalogSourceId && sourceUrls.length > 0) {
       void findBookByOPDSSources(appService, {

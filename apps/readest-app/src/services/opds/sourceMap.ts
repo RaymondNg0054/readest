@@ -3,6 +3,23 @@ import type { AppService } from '@/types/system';
 
 const openOPDSDb = (appService: AppService) => appService.openDatabase('opds', 'opds.db', 'Data');
 
+export const getOPDSCatalogBookHashes = async (
+  appService: AppService,
+  catalogIds: string[],
+): Promise<Set<string>> => {
+  if (!catalogIds.length) return new Set();
+  const db = await openOPDSDb(appService);
+  try {
+    const rows = await db.select<{ book_hash: string }>(
+      `SELECT DISTINCT book_hash FROM opds_source_mappings WHERE catalog_id IN (${catalogIds.map(() => '?').join(', ')})`,
+      catalogIds,
+    );
+    return new Set(rows.map((row) => row.book_hash));
+  } finally {
+    await db.close();
+  }
+};
+
 export const upsertOPDSSourceMapping = async (
   appService: AppService,
   input: { catalogId: string; sourceUrl: string; bookHash: string },
@@ -27,7 +44,7 @@ export const upsertOPDSSourceMapping = async (
 
 export const findBookByOPDSSources = async (
   appService: AppService,
-  input: { catalogId: string; sourceUrls: string[]; library: Book[] },
+  input: { catalogId: string; sourceUrls: string[]; library: Book[]; includeDeleted?: boolean },
 ): Promise<Book | null> => {
   const sourceUrls = Array.from(new Set(input.sourceUrls.filter(Boolean)));
   if (!input.catalogId || sourceUrls.length === 0 || input.library.length === 0) return null;
@@ -45,7 +62,11 @@ export const findBookByOPDSSources = async (
     );
     return (
       rows
-        .map((row) => input.library.find((book) => book.hash === row.book_hash && !book.deletedAt))
+        .map((row) =>
+          input.library.find(
+            (book) => book.hash === row.book_hash && (input.includeDeleted || !book.deletedAt),
+          ),
+        )
         .find(Boolean) ?? null
     );
   } finally {

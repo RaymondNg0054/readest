@@ -1,9 +1,10 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
-import { render, cleanup, fireEvent, waitFor, screen } from '@testing-library/react';
+import { act, render, cleanup, fireEvent, waitFor, screen } from '@testing-library/react';
 
 import { Book } from '@/types/book';
 import BookDetailModal from '@/components/metadata/BookDetailModal';
 import { DropdownProvider } from '@/context/DropdownContext';
+import { useLibraryStore } from '@/store/libraryStore';
 
 vi.mock('@/hooks/useTranslation', () => ({
   useTranslation: () => (s: string) => s,
@@ -47,7 +48,10 @@ vi.mock('@/hooks/useResponsiveSize', () => ({
 
 vi.mock('@/helpers/settings', () => ({ saveSysSettings: vi.fn() }));
 
-vi.mock('@/services/environment', () => ({ isWebAppPlatform: () => false }));
+vi.mock('@/services/environment', () => ({
+  isWebAppPlatform: () => false,
+  isTauriAppPlatform: () => false,
+}));
 
 vi.mock('@/libs/metadata', () => ({ searchMetadata: vi.fn(async () => []) }));
 
@@ -93,7 +97,10 @@ vi.mock('@/components/DeleteConfirmAlert', () => ({
 vi.mock('@/components/metadata/SourceSelector', () => ({ __esModule: true, default: () => null }));
 vi.mock('@/components/Spinner', () => ({ __esModule: true, default: () => null }));
 
-afterEach(() => cleanup());
+afterEach(() => {
+  cleanup();
+  useLibraryStore.getState().setLibrary([]);
+});
 
 const makeBook = (): Book =>
   ({
@@ -114,6 +121,73 @@ const makeBook = (): Book =>
   }) as Book;
 
 describe('BookDetailModal cover refresh after save', () => {
+  it('does not reset a metadata draft when background catalog linking changes the library', async () => {
+    const book = makeBook();
+    useLibraryStore.getState().setLibrary([book]);
+    render(
+      <BookDetailModal book={book} isOpen onClose={vi.fn()} handleBookMetadataUpdate={vi.fn()} />,
+    );
+    await screen.findByTitle('Edit Metadata');
+    fireEvent.click(screen.getByTitle('Edit Metadata'));
+    const title = await screen.findByPlaceholderText('Enter book title');
+    fireEvent.change(title, { target: { value: 'My unsaved title' } });
+
+    await act(async () => {
+      useLibraryStore.getState().setLibrary([
+        {
+          ...book,
+          metadata: {
+            ...book.metadata!,
+            catalogSource: {
+              targetId: 'cwa',
+              bookId: '12',
+              protocol: 'calibre-web',
+            },
+          },
+        },
+      ]);
+    });
+
+    expect((screen.getByPlaceholderText('Enter book title') as HTMLInputElement).value).toBe(
+      'My unsaved title',
+    );
+  });
+
+  it('never adds a manual catalog action while background linking updates the library', async () => {
+    const book = { ...makeBook(), downloadedAt: 1 };
+    const legacy = { handleBookCatalogUpload: vi.fn() };
+    useLibraryStore.getState().setLibrary([book]);
+    const { container } = render(
+      <DropdownProvider>
+        <BookDetailModal book={book} isOpen onClose={vi.fn()} {...legacy} />
+      </DropdownProvider>,
+    );
+    await waitFor(() => expect(appSvc.getBookFileSize).toHaveBeenCalled());
+    fireEvent.click(container.querySelector('button[aria-label="More Actions"]')!);
+    expect(screen.queryByText('Upload to catalog')).toBeNull();
+    expect(screen.queryByText('Catalog upload status')).toBeNull();
+
+    await act(async () => {
+      useLibraryStore.getState().setLibrary([
+        {
+          ...book,
+          metadata: {
+            ...book.metadata!,
+            catalogSource: {
+              targetId: 'cwa',
+              bookId: '12',
+              protocol: 'calibre-web',
+            },
+          },
+        },
+      ]);
+    });
+
+    expect(book.metadata?.catalogSource).toBeUndefined();
+    expect(screen.queryByText('Upload to catalog')).toBeNull();
+    expect(screen.queryByText('Catalog upload status')).toBeNull();
+  });
+
   it('updates the Book Details view cover when the cover is edited and saved', async () => {
     const book = makeBook();
     const onUpdate = vi.fn();

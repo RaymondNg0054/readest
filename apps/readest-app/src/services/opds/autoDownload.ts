@@ -25,6 +25,10 @@ import {
 import type { PendingItem, SyncResult, OPDSSubscriptionState, FailedEntry } from './types';
 import { runWithConcurrency } from '@/utils/concurrency';
 import { uniqueId } from '@/utils/misc';
+import { withCatalogOperation } from '@/services/catalogs/operationQueue';
+import { opdsCatalogOperationId } from '@/services/catalogs/identity';
+import { hasBlockingCatalogUploads } from '@/store/catalogUploadStore';
+import { useLibraryStore } from '@/store/libraryStore';
 
 /**
  * Download a single item and import it into the library.
@@ -34,7 +38,7 @@ async function downloadAndImport(
   catalog: OPDSCatalog,
   appService: AppService,
   books: Book[],
-): Promise<Book> {
+): Promise<Book | null> {
   const url = resolveURL(item.acquisitionHref, item.baseURL);
   // Identity gate (#5859): if this OPDS source already maps to a book still in
   // the library, it is already imported. Re-importing it would mint a NEW
@@ -53,9 +57,12 @@ async function downloadAndImport(
   for (const catalogId of catalogIds) {
     existing = await findBookByOPDSSources(appService, {
       catalogId,
-      sourceUrls: [url],
+      sourceUrls: [url, item.entryId],
       library: books,
+      includeDeleted: true,
     });
+    if (existing?.metadata?.catalogSource) return null;
+    if (existing?.deletedAt) existing = null;
     if (existing) break;
   }
   if (existing) {
@@ -175,7 +182,27 @@ async function syncCatalog(
   books: Book[],
   onBooksImported?: (newBooks: Book[]) => Promise<void>,
 ): Promise<{ newBooks: Book[]; state: OPDSSubscriptionState; error?: unknown }> {
+  return withCatalogOperation(opdsCatalogOperationId(catalog), () => {
+    const live = useLibraryStore.getState();
+    if (live.libraryLoaded) {
+      // Rebase the owned import snapshot after queued uploads, not the store's array.
+      const current = new Map(books.map((book) => [book.hash, book]));
+      for (const book of live.library) current.set(book.hash, book);
+      books.length = 0;
+      for (const book of current.values()) books.push(book);
+    }
+    return syncCatalogUnlocked(catalog, appService, books, onBooksImported);
+  });
+}
+
+async function syncCatalogUnlocked(
+  catalog: OPDSCatalog,
+  appService: AppService,
+  books: Book[],
+  onBooksImported?: (newBooks: Book[]) => Promise<void>,
+): Promise<{ newBooks: Book[]; state: OPDSSubscriptionState; error?: unknown }> {
   const state = await loadSubscriptionState(appService, catalog.id);
+  if (hasBlockingCatalogUploads(opdsCatalogOperationId(catalog))) return { newBooks: [], state };
 
   // Discovery: find new items from feeds
   const pendingItems = await checkFeedForNewItems(catalog, state);
@@ -249,7 +276,7 @@ async function syncCatalog(
       for (const outcome of downloadResults) {
         const item = outcome.item;
         if ('result' in outcome) {
-          batchBooks.push(outcome.result);
+          if (outcome.result) batchBooks.push(outcome.result);
           newKnownIds.push(item.entryId);
         } else {
           const attempts = (priorAttempts.get(item.entryId) ?? 0) + 1;
@@ -315,11 +342,17 @@ export async function syncSubscribedCatalogs(
   }
 
   const allNewBooks: Book[] = [];
+  const workingBooks = [...books];
   const errors: SyncResult['errors'] = [];
 
   for (const catalog of eligible) {
     try {
-      const { newBooks, error } = await syncCatalog(catalog, appService, books, onBooksImported);
+      const { newBooks, error } = await syncCatalog(
+        catalog,
+        appService,
+        workingBooks,
+        onBooksImported,
+      );
       // Take the books committed before the failure, then let the existing
       // error path run — those batches are already on disk and marked known.
       allNewBooks.push(...newBooks);

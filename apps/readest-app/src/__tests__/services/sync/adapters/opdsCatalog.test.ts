@@ -45,6 +45,12 @@ const makeRow = (overrides: Partial<ReplicaRow> = {}): ReplicaRow => ({
 });
 
 describe('opdsCatalogAdapter', () => {
+  test('preserves an explicitly configured upload protocol, including disabling it', () => {
+    for (const uploadProtocol of ['calibre-web', 'none'] as const) {
+      const fields = opdsCatalogAdapter.pack({ ...sample, uploadProtocol });
+      expect(opdsCatalogAdapter.unpack(fields).uploadProtocol).toBe(uploadProtocol);
+    }
+  });
   test('kind + schemaVersion are stable constants', () => {
     expect(opdsCatalogAdapter.kind).toBe('opds_catalog');
     expect(opdsCatalogAdapter.schemaVersion).toBe(1);

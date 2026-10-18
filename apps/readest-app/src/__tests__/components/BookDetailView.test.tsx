@@ -129,6 +129,51 @@ describe('BookDetailView delete dropdown layout', () => {
 });
 
 describe('BookDetailView More menu (Goodreads + Share)', () => {
+  it.each([
+    { catalogSource: { targetId: 'cwa', bookId: '12', protocol: 'calibre-web' as const } },
+  ])('does not offer another catalog upload for a book already linked to its server copy: %j', (source) => {
+    const legacy = { onCatalogUpload: vi.fn() };
+    const { container, queryByText } = renderView({
+      ...legacy,
+      book: makeBook({
+        metadata: {
+          title: 'Test Book',
+          author: 'Test Author',
+          language: 'en',
+          ...source,
+        },
+      }),
+    });
+    fireEvent.click(container.querySelector('button[aria-label="More Actions"]')!);
+    expect(queryByText('Upload to catalog')).toBeNull();
+    expect(queryByText('Catalog upload status')).toBeNull();
+  });
+
+  it('never shows catalog status or linking controls, even when a legacy parent passes pending state', () => {
+    const legacy = { onCatalogUpload: vi.fn(), catalogUploadPending: true };
+    const { container, queryByText } = renderView({
+      ...legacy,
+      book: makeBook({
+        metadata: {
+          title: 'Test Book',
+          author: 'Test Author',
+          language: 'en',
+          catalogSource: { targetId: 'cwa', bookId: '12', protocol: 'calibre-web' },
+        },
+      }),
+    });
+    fireEvent.click(container.querySelector('button[aria-label="More Actions"]')!);
+    expect(queryByText('Catalog upload status')).toBeNull();
+    expect(queryByText('Upload to catalog')).toBeNull();
+  });
+
+  it('keeps catalog uploads automatic instead of offering a per-book action', () => {
+    const legacy = { onCatalogUpload: vi.fn() };
+    const { container, queryByText } = renderView({ fileSize: 1024, ...legacy });
+    fireEvent.click(container.querySelector('button[aria-label="More Actions"]')!);
+    expect(queryByText('Upload to catalog')).toBeNull();
+    expect(legacy.onCatalogUpload).not.toHaveBeenCalled();
+  });
   const openMore = (container: HTMLElement) => {
     const toggle = container.querySelector('button[aria-label="More Actions"]');
     expect(toggle).toBeTruthy();

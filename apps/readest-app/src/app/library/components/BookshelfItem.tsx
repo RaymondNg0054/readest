@@ -26,6 +26,7 @@ import BookItem from './BookItem';
 import GroupItem from './GroupItem';
 import BookContextMenuPopup, { type BookContextMenuItem } from './BookContextMenuPopup';
 import { useOpenBook } from '../hooks/useOpenBook';
+import { getCatalogUploadTargets } from '@/services/catalogs/upload';
 
 // A native popup blocks Tauri's main thread until the menu is dismissed and
 // holds the webview's resources table lock for that whole time, while
@@ -161,6 +162,7 @@ const BookshelfItem: React.FC<BookshelfItemProps> = ({
   );
 
   const buildBookMenuItems = (book: Book): BookContextMenuItem[] => {
+    const uploadTargets = getCatalogUploadTargets(settings);
     const osPlatform = getOSPlatform();
     const fileRevealLabel =
       FILE_REVEAL_LABELS[osPlatform as FILE_REVEAL_PLATFORMS] || FILE_REVEAL_LABELS.default;
@@ -236,7 +238,7 @@ const BookshelfItem: React.FC<BookshelfItemProps> = ({
         },
       },
       upload: {
-        text: _('Upload Book'),
+        text: uploadTargets.length ? _('Upload to Cloud') : _('Upload Book'),
         action: async () => {
           handleBookUpload(book);
         },
@@ -355,7 +357,7 @@ const BookshelfItem: React.FC<BookshelfItemProps> = ({
       cachedMenuRef.current = null;
       if (cached) releaseMenu(cached);
     };
-  }, [item, itemSelected, isSelectMode, settings.localBooksDir, _]);
+  }, [item, itemSelected, isSelectMode, settings.localBooksDir, settings.opdsCatalogs, _]);
 
   const handleSelectItem = useCallback(
     throttle(() => {

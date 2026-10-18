@@ -2,6 +2,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, fireEvent, render, screen } from '@testing-library/react';
 
 import type { Book } from '@/types/book';
+import type { OPDSCatalog } from '@/types/opds';
+import { useCatalogUploadStore } from '@/store/catalogUploadStore';
 
 /**
  * Issue #5360 — on Linux/Wayland the native GTK context menu is popped up
@@ -15,6 +17,11 @@ import type { Book } from '@/types/book';
 const popupSpy = vi.hoisted(() => vi.fn(async () => {}));
 const closeSpy = vi.hoisted(() => vi.fn(async () => {}));
 const menuNew = vi.hoisted(() => vi.fn(async () => ({ popup: popupSpy, close: closeSpy })));
+const catalogState = vi.hoisted(() => ({ native: false, catalogs: [] as OPDSCatalog[] }));
+vi.mock('@/services/environment', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('@/services/environment')>()),
+  isTauriAppPlatform: () => catalogState.native,
+}));
 
 vi.mock('@tauri-apps/api/menu', () => ({
   Menu: { new: menuNew },
@@ -47,7 +54,9 @@ vi.mock('@/context/EnvContext', () => ({
 }));
 
 vi.mock('@/store/settingsStore', () => ({
-  useSettingsStore: () => ({ settings: { localBooksDir: '/books' } }),
+  useSettingsStore: () => ({
+    settings: { localBooksDir: '/books', opdsCatalogs: catalogState.catalogs },
+  }),
 }));
 
 vi.mock('@/hooks/useTranslation', () => ({
@@ -112,6 +121,29 @@ describe('library context menu on Linux desktop (issue #5360)', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     appService.isLinuxApp = true;
+    catalogState.native = false;
+    catalogState.catalogs = [];
+    useCatalogUploadStore.setState({ receipts: {} });
+  });
+
+  it.each([
+    false,
+    true,
+  ])('never offers manual catalog actions, including with pending=%s', async (pending) => {
+    catalogState.native = true;
+    catalogState.catalogs = [
+      { id: 'cwa', name: 'CWA', url: 'https://books.test/opds', uploadProtocol: 'calibre-web' },
+    ];
+    if (pending)
+      useCatalogUploadStore
+        .getState()
+        .setReceipt({ bookHash: book.hash, targetId: 'cwa', state: 'queued' });
+    renderItem();
+    openContextMenu();
+    await screen.findAllByRole('menuitem');
+    expect(screen.queryByRole('menuitem', { name: 'Catalog upload status' })).toBeNull();
+    expect(screen.queryByRole('menuitem', { name: 'Upload to catalog' })).toBeNull();
+    expect(screen.getByRole('menuitem', { name: 'Upload to Cloud' })).toBeTruthy();
   });
 
   afterEach(() => {

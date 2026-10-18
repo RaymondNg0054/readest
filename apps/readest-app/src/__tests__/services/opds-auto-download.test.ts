@@ -60,7 +60,10 @@ vi.mock('@/services/opds/subscriptionState', () => ({
 import { syncSubscribedCatalogs } from '@/services/opds/autoDownload';
 import { checkFeedForNewItems } from '@/services/opds/feedChecker';
 import { saveSubscriptionState, loadSubscriptionState } from '@/services/opds/subscriptionState';
-import { upsertOPDSSourceMapping } from '@/services/opds/sourceMap';
+import { upsertOPDSSourceMapping, findBookByOPDSSources } from '@/services/opds/sourceMap';
+import { useCatalogUploadStore, CATALOG_UPLOAD_IMPORT_PAUSE_MS } from '@/store/catalogUploadStore';
+import { opdsCatalogOperationId } from '@/services/catalogs/identity';
+import { useLibraryStore } from '@/store/libraryStore';
 import { applyOPDSCover } from '@/services/opds/cover';
 import { downloadFile } from '@/libs/storage';
 import { MAX_RETRY_ATTEMPTS, PERSIST_BATCH_SIZE } from '@/services/opds/types';
@@ -89,6 +92,14 @@ describe('OPDS auto-download orchestrator', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.mocked(findBookByOPDSSources).mockResolvedValue(null);
+    useCatalogUploadStore.setState({ receipts: {} });
+    useLibraryStore.setState({
+      library: [],
+      visibleLibrary: [],
+      hashIndex: new Map(),
+      libraryLoaded: false,
+    });
     appService = createMockAppService();
   });
 
@@ -99,6 +110,175 @@ describe('OPDS auto-download orchestrator', () => {
     const result = await syncSubscribedCatalogs(catalogs, appService, []);
     expect(result.totalNewBooks).toBe(0);
     expect(checkFeedForNewItems).not.toHaveBeenCalled();
+  });
+
+  it('does not re-import or resurrect a source-linked local upload that was deleted while CWA processed it', async () => {
+    const catalog: OPDSCatalog = {
+      id: 'cat-1',
+      name: 'CWA',
+      url: 'https://books.test/opds',
+      autoDownload: true,
+    };
+    const deleted: Book = {
+      hash: 'original',
+      title: 'Book',
+      author: 'Author',
+      format: 'EPUB',
+      createdAt: 1,
+      updatedAt: 1,
+      deletedAt: 2,
+      metadata: {
+        title: 'Book',
+        author: 'Author',
+        language: 'en',
+        catalogSource: {
+          targetId: opdsCatalogOperationId(catalog),
+          bookId: '12',
+          protocol: 'calibre-web',
+        },
+      },
+    };
+    vi.mocked(checkFeedForNewItems).mockResolvedValueOnce([
+      {
+        entryId: 'urn:uuid:owned',
+        title: 'Book',
+        acquisitionHref: '/opds/download/12/epub/',
+        mimeType: 'application/epub+zip',
+        baseURL: catalog.url,
+      },
+    ]);
+    vi.mocked(findBookByOPDSSources).mockImplementation(async (_service, input) =>
+      'includeDeleted' in input && input.includeDeleted ? deleted : null,
+    );
+    const result = await syncSubscribedCatalogs([catalog], appService, [deleted]);
+    expect(result.totalNewBooks).toBe(0);
+    expect(appService.importBook).not.toHaveBeenCalled();
+    expect(downloadFile).not.toHaveBeenCalled();
+  });
+
+  it('never lets the importer mutate the live library array while rebasing a queued catalog sync', async () => {
+    useLibraryStore.getState().setLibrary([]);
+    const original = useLibraryStore.getState().library;
+    const catalog: OPDSCatalog = {
+      id: 'cat-1',
+      name: 'CWA',
+      url: 'https://books.test/opds',
+      autoDownload: true,
+    };
+    const imported: Book = {
+      hash: 'new-book',
+      title: 'Book',
+      author: 'Author',
+      format: 'EPUB',
+      createdAt: 1,
+      updatedAt: 1,
+    };
+    vi.mocked(checkFeedForNewItems).mockResolvedValueOnce([
+      {
+        entryId: 'new-id',
+        title: 'Book',
+        acquisitionHref: '/book.epub',
+        mimeType: 'application/epub+zip',
+        baseURL: catalog.url,
+      },
+    ]);
+    vi.mocked(appService.importBook).mockImplementationOnce(async (_file, books) => {
+      books.push(imported);
+      return imported;
+    });
+    const result = await syncSubscribedCatalogs([catalog], appService, []);
+    expect(result.newBooks).toHaveLength(1);
+    expect(original).toHaveLength(0);
+    expect(useLibraryStore.getState().library).toHaveLength(0);
+  });
+
+  it('pauses automatic imports while a catalog upload is awaiting its server identity', async () => {
+    const catalog: OPDSCatalog = {
+      id: 'cat-1',
+      name: 'CWA',
+      url: 'https://books.test/opds',
+      autoDownload: true,
+    };
+    useCatalogUploadStore.getState().setReceipt({
+      targetId: opdsCatalogOperationId(catalog),
+      bookHash: 'local-book',
+      state: 'queued',
+    });
+    const result = await syncSubscribedCatalogs([catalog], appService, []);
+    expect(result.totalNewBooks).toBe(0);
+    expect(checkFeedForNewItems).not.toHaveBeenCalled();
+    expect(saveSubscriptionState).not.toHaveBeenCalled();
+  });
+
+  it('pauses automatic imports for a recently started upload', async () => {
+    const catalog: OPDSCatalog = {
+      id: 'cat-1',
+      name: 'CWA',
+      url: 'https://books.test/opds',
+      autoDownload: true,
+    };
+    useCatalogUploadStore.getState().setReceipt({
+      targetId: opdsCatalogOperationId(catalog),
+      bookHash: 'local-book',
+      state: 'queued',
+      startedAt: Date.now(),
+    });
+    const result = await syncSubscribedCatalogs([catalog], appService, []);
+    expect(result.totalNewBooks).toBe(0);
+    expect(checkFeedForNewItems).not.toHaveBeenCalled();
+    expect(saveSubscriptionState).not.toHaveBeenCalled();
+  });
+
+  it('resumes automatic imports once a pending upload outlives the linking window', async () => {
+    const catalog: OPDSCatalog = {
+      id: 'cat-1',
+      name: 'CWA',
+      url: 'https://books.test/opds',
+      autoDownload: true,
+    };
+    useCatalogUploadStore.getState().setReceipt({
+      targetId: opdsCatalogOperationId(catalog),
+      bookHash: 'local-book',
+      state: 'queued',
+      startedAt: Date.now() - CATALOG_UPLOAD_IMPORT_PAUSE_MS - 1000,
+    });
+    const result = await syncSubscribedCatalogs([catalog], appService, []);
+    expect(result.totalNewBooks).toBe(0);
+    expect(checkFeedForNewItems).toHaveBeenCalled();
+    expect(saveSubscriptionState).toHaveBeenCalled();
+  });
+
+  it('reuses an uploaded book by publication ID even if CWA has replaced its acquisition format', async () => {
+    const catalog: OPDSCatalog = {
+      id: 'cat-1',
+      name: 'CWA',
+      url: 'https://books.test/opds',
+      autoDownload: true,
+    };
+    const original: Book = {
+      hash: 'original',
+      title: 'Book',
+      author: 'Author',
+      format: 'MOBI',
+      createdAt: 1,
+      updatedAt: 1,
+    };
+    vi.mocked(checkFeedForNewItems).mockResolvedValueOnce([
+      {
+        entryId: 'urn:uuid:stable',
+        title: 'Book',
+        acquisitionHref: '/opds/download/12/epub/',
+        mimeType: 'application/epub+zip',
+        baseURL: catalog.url,
+      },
+    ]);
+    vi.mocked(findBookByOPDSSources).mockImplementation(async (_service, input) =>
+      input.sourceUrls.includes('urn:uuid:stable') ? original : null,
+    );
+    const result = await syncSubscribedCatalogs([catalog], appService, [original]);
+    expect(result.newBooks[0]?.hash).toBe('original');
+    expect(appService.importBook).not.toHaveBeenCalled();
+    expect(downloadFile).not.toHaveBeenCalled();
   });
 
   it('skips disabled catalogs even with autoDownload', async () => {

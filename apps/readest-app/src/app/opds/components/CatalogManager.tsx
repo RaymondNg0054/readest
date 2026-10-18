@@ -56,6 +56,7 @@ import {
   parseCustomHeadersInput,
 } from '@/utils/customHeaders';
 import ModalPortal from '@/components/ModalPortal';
+import { calibreWebBaseUrl } from '@/services/catalogs/identity';
 
 const POPULAR_CATALOGS: OPDSCatalog[] = [
   {
@@ -115,6 +116,7 @@ const EMPTY_NEW_CATALOG = {
   customHeadersInput: '',
   proxyConsent: false,
   autoDownload: false,
+  uploadProtocol: 'none' as 'none' | 'calibre-web',
 };
 
 interface CatalogCardProps {
@@ -459,6 +461,14 @@ export function CatalogManager({ inSubPage = false }: CatalogManagerProps = {}) 
       setUrlError(_('URL must start with http:// or https://'));
       return;
     }
+    if (newCatalog.uploadProtocol === 'calibre-web') {
+      try {
+        calibreWebBaseUrl(newCatalog.url);
+      } catch {
+        setUrlError(_('Calibre-Web upload catalogs must use an OPDS URL under /opds'));
+        return;
+      }
+    }
 
     if (
       process.env['NODE_ENV'] === 'production' &&
@@ -535,6 +545,7 @@ export function CatalogManager({ inSubPage = false }: CatalogManagerProps = {}) 
         password: newCatalog.password || undefined,
         customHeaders,
         autoDownload: newCatalog.autoDownload || undefined,
+        uploadProtocol: newCatalog.uploadProtocol,
       });
     } else {
       useCustomOPDSStore.getState().addCatalog({
@@ -546,6 +557,7 @@ export function CatalogManager({ inSubPage = false }: CatalogManagerProps = {}) 
         password: newCatalog.password || undefined,
         customHeaders,
         autoDownload: newCatalog.autoDownload || undefined,
+        uploadProtocol: newCatalog.uploadProtocol,
       });
     }
     persistMutation();
@@ -569,6 +581,7 @@ export function CatalogManager({ inSubPage = false }: CatalogManagerProps = {}) 
       customHeadersInput: formatCustomHeadersInput(catalog.customHeaders),
       proxyConsent: false,
       autoDownload: catalog.autoDownload || false,
+      uploadProtocol: catalog.uploadProtocol ?? 'none',
     });
     setEditingCatalogId(catalog.id);
     setShowAddDialog(true);
@@ -955,6 +968,32 @@ export function CatalogManager({ inSubPage = false }: CatalogManagerProps = {}) 
                     rows={2}
                     disabled={isValidating}
                   />
+                </div>
+
+                <div className='space-y-1.5'>
+                  <label htmlFor='catalog-upload-protocol' className='block'>
+                    {_('Upload protocol')}
+                  </label>
+                  <select
+                    id='catalog-upload-protocol'
+                    className='select eink-bordered settings-content w-full'
+                    value={newCatalog.uploadProtocol}
+                    disabled={isValidating}
+                    onChange={(event) =>
+                      setNewCatalog({
+                        ...newCatalog,
+                        uploadProtocol: event.target.value as 'none' | 'calibre-web',
+                      })
+                    }
+                  >
+                    <option value='none'>{_('None — read-only catalog')}</option>
+                    <option value='calibre-web'>{_('Calibre-Web / Calibre-Web Automated')}</option>
+                  </select>
+                  <p className='text-[0.85em]'>
+                    {_(
+                      'OPDS does not define uploads. Selecting a supported adapter automatically sends local books to this catalog in the background. Uploads require the desktop or mobile app.',
+                    )}
+                  </p>
                 </div>
 
                 <div className='flex flex-col'>
