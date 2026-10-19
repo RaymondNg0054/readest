@@ -7,6 +7,7 @@ import { HighlightColor, HighlightStyle, UserHighlightColor, ViewSettings } from
 import { OPDSCatalog } from './opds';
 import { WebSource } from './webSource';
 import { ABSServer } from './audiobookshelf';
+import type { CalibreServer } from './calibre';
 import type { CustomTranslator, TranslationPrompt } from './translation';
 import type { CustomTTSService } from './customTTS';
 import type { AISettings } from '@/services/ai/types';
@@ -537,6 +538,8 @@ export interface SystemSettings {
   dictionarySettings: DictionarySettings;
   opdsCatalogs: OPDSCatalog[];
   absServers: ABSServer[];
+  /** Device-local connections; credentials are never published in the settings replica. */
+  calibreServers?: CalibreServer[];
   /** User-configured translation backends; synced as `custom_translator`. */
   customTranslators?: CustomTranslator[];
   /** User translation prompts; synced as `translation_prompt`. */

@@ -177,6 +177,15 @@ export function sanitizeSettingsForBackup(
         return rest;
       });
     }
+    if (Array.isArray(clone.calibreServers)) {
+      clone.calibreServers = clone.calibreServers.map(
+        ({ username: _username, password: _password, ...server }) => ({
+          ...server,
+          enabled: false,
+          syncProgress: false,
+        }),
+      );
+    }
     if (Array.isArray(clone.customTranslators)) {
       clone.customTranslators = clone.customTranslators.map((translator) => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars

@@ -308,6 +308,22 @@ const BookItem: React.FC<BookItemProps> = ({
                 <MdOutlineOfflinePin size={iconSize15} />
               </div>
             )}
+            {book.metadata?.calibreSource && !book.downloadedAt && !isTransferring && (
+              <button
+                type='button'
+                aria-label={_('Download Book')}
+                title={
+                  book.metadata.calibreSource.missing
+                    ? _('No longer available on the Calibre server')
+                    : _('Download Book')
+                }
+                className='show-cloud-button -m-2 p-2'
+                onPointerDown={(e) => e.stopPropagation()}
+                onClick={() => handleBookDownload(book, { queued: false })}
+              >
+                <LiaCloudDownloadAltSolid size={iconSize15} />
+              </button>
+            )}
             {isTransferring
               ? // Progress is rendered as a cover overlay; keep the row's action
                 // buttons hidden while a transfer is active. Same condition as
@@ -320,6 +336,7 @@ const BookItem: React.FC<BookItemProps> = ({
                 // would render forever and Upload would always fail.
                 !isFeedBook(book) &&
                 !isAudiobook(book) &&
+                !(book.metadata?.calibreSource && !book.downloadedAt) &&
                 (!book.uploadedAt || (book.uploadedAt && !book.downloadedAt)) && (
                   <button
                     aria-label={!book.uploadedAt ? _('Upload Book') : _('Download Book')}

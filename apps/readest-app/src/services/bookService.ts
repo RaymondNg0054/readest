@@ -1213,6 +1213,8 @@ export async function fetchBookDetails(
   book: Book,
   downloadBookFn: (book: Book) => Promise<void>,
 ): Promise<BookDoc['metadata']> {
+  // Calibre stubs already have server metadata and deliberately have no file.
+  if (book.metadata?.calibreSource) return book.metadata;
   const fp = getLocalBookFilename(book);
   if (!(await fs.exists(fp, 'Books')) && book.uploadedAt) {
     await downloadBookFn(book);
@@ -1246,7 +1248,9 @@ export async function refreshBookMetadata(fs: FileSystem, book: Book): Promise<b
     ({ book: bookDoc } = await new DocumentLoader(file).open());
     if (!bookDoc) return false;
 
-    book.metadata = bookDoc.metadata;
+    book.metadata = book.metadata?.calibreSource
+      ? { ...bookDoc.metadata, calibreSource: book.metadata.calibreSource }
+      : bookDoc.metadata;
     // PDF metaHash is salted with the original import filename (issue #5411),
     // which is lost after import — keep the value stamped at import time.
     if (book.format !== 'PDF' || !book.metaHash) {

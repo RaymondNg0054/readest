@@ -394,7 +394,9 @@ export const getBookWithUpdatedMetadata = (
 ): Book => {
   const updatedBook: Book = {
     ...book,
-    metadata,
+    metadata: book.metadata?.calibreSource
+      ? { ...metadata, calibreSource: book.metadata.calibreSource }
+      : metadata,
     ...(tags ? { tags: [...tags] } : {}),
     title: formatTitle(metadata.title),
     author: formatAuthors(metadata.author),

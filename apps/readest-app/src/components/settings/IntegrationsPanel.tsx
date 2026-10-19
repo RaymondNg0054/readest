@@ -47,6 +47,7 @@ import { getICloudContainerStatus } from '@/utils/bridge';
 import { navigateToLogin, navigateToProfile } from '@/utils/nav';
 import { eventDispatcher } from '@/utils/event';
 import ABSForm from './integrations/ABSForm';
+import CalibreForm from './integrations/CalibreForm';
 import BookOrbitForm from './integrations/BookOrbitForm';
 import KOSyncForm from './integrations/KOSyncForm';
 import ReadwiseForm from './integrations/ReadwiseForm';
@@ -94,6 +95,7 @@ type SubPage =
   | 'notion'
   | 'opds'
   | 'audiobookshelf'
+  | 'calibre'
   | 'send'
   | 'localsend'
   | null;
@@ -119,6 +121,7 @@ const IntegrationsPanel: React.FC = () => {
   const opdsCatalogs = useCustomOPDSStore((s) => s.catalogs);
   const opdsCount = opdsCatalogs.filter((c) => !c.deletedAt).length;
   const absServers = useABSServerStore((s) => s.servers);
+  const calibreServers = useSettingsStore((s) => s.settings.calibreServers);
   const absCount = absServers.filter((s) => !s.deletedAt).length;
   // The device name Nearby BookDrop announces once its service is running,
   // so the integrations row can show it in place of a bare "On".
@@ -240,6 +243,7 @@ const IntegrationsPanel: React.FC = () => {
       requestedSubPage === 'notion' ||
       requestedSubPage === 'opds' ||
       requestedSubPage === 'audiobookshelf' ||
+      requestedSubPage === 'calibre' ||
       requestedSubPage === 'send' ||
       requestedSubPage === 'localsend'
     ) {
@@ -495,6 +499,12 @@ const IntegrationsPanel: React.FC = () => {
     return (
       <div className='my-4 w-full'>
         <ABSForm onBack={() => setSubPage(null)} />
+      </div>
+    );
+  if (subPage === 'calibre')
+    return (
+      <div className='my-4 w-full'>
+        <CalibreForm onBack={() => setSubPage(null)} />
       </div>
     );
   if (subPage === 'send')
@@ -854,6 +864,16 @@ const IntegrationsPanel: React.FC = () => {
               title={_('Audiobookshelf')}
               status={absStatus}
               onClick={() => setSubPage('audiobookshelf')}
+            />
+            <IntegrationRow
+              icon={RiDatabase2Line}
+              title={_('Calibre')}
+              status={
+                calibreServers?.length
+                  ? _('{{count}} server', { count: calibreServers.length })
+                  : _('No servers')
+              }
+              onClick={() => setSubPage('calibre')}
             />
             <IntegrationRow
               icon={RiSendPlaneLine}

@@ -244,6 +244,32 @@ describe('sanitizeSettingsForBackup - blacklist', () => {
 });
 
 describe('sanitizeSettingsForBackup - credentials', () => {
+  it('strips Calibre credentials and disables restored automatic requests unless opted in', () => {
+    const input = makeSettings({
+      calibreServers: [
+        {
+          id: 'calibre',
+          name: 'Books',
+          url: 'https://books.test',
+          kind: 'calibre',
+          libraryId: 'Library',
+          username: 'reader',
+          password: 'secret',
+          enabled: true,
+          syncProgress: true,
+        },
+      ],
+    });
+    expect(sanitizeSettingsForBackup(input).calibreServers?.[0]).toMatchObject({
+      enabled: false,
+      syncProgress: false,
+    });
+    expect(sanitizeSettingsForBackup(input).calibreServers?.[0]?.password).toBeUndefined();
+    expect(
+      sanitizeSettingsForBackup(input, { includeCredentials: true }).calibreServers?.[0]?.password,
+    ).toBe('secret');
+    expect(input.calibreServers?.[0]?.enabled).toBe(true);
+  });
   it('strips credentials by default', () => {
     const out = sanitizeSettingsForBackup(makeSettings());
     expect(rec(out.kosync)['username']).toBeUndefined();

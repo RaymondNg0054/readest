@@ -55,6 +55,8 @@ export const useBooksSync = () => {
       // Demo books are the sample shelf we hand anonymous web visitors, not the
       // user's content — they never go to the cloud (issue #5049).
       .filter((book) => !isDemoBook(book))
+      // Calibre stubs have no cloud file; do not advertise them as cloud books.
+      .filter((book) => !book.metadata?.calibreSource || !!book.downloadedAt || !!book.uploadedAt)
       .filter(
         (book) =>
           !book.syncedAt ||

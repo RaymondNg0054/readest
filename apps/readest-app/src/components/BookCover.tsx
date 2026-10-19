@@ -8,6 +8,7 @@ import { getInitializedAppService } from '@/services/environment';
 import { observeCoverForThumbnail } from '@/services/coverThumbnailService';
 import { useDefaultBookshelfCovers } from '@/hooks/useDefaultBookshelfCovers';
 import { useLibraryStore } from '@/store/libraryStore';
+import { useCalibreCover } from '@/hooks/useCalibreCover';
 
 export const HideBookCoversContext = createContext<boolean | undefined>(undefined);
 
@@ -46,10 +47,12 @@ const BookCover: React.FC<BookCoverProps> = memo<BookCoverProps>(
       thumbnail?.coverHash === (book.coverHash ?? null) ? thumbnail.url : null;
     const usableThumbnail = matchingThumbnail === failedThumbnailUrl ? null : matchingThumbnail;
     const metadataCoverImageUrl = book.metadata?.coverImageUrl || null;
-    const coverImageUrl = metadataCoverImageUrl || usableThumbnail || book.coverImageUrl || null;
     const shelfHideCovers = useContext(HideBookCoversContext);
     const defaultShelfCovers = useDefaultBookshelfCovers();
     const hideCovers = shelfHideCovers ?? defaultShelfCovers.hideCovers;
+    const calibreCover = useCalibreCover(book, coverRef, hideCovers);
+    const coverImageUrl =
+      metadataCoverImageUrl || usableThumbnail || calibreCover || book.coverImageUrl || null;
     const displayCoverUrl = hideCovers ? null : coverImageUrl;
 
     const shouldShowSpine = showSpine && !hideCovers && imageLoaded && !imageError;
@@ -97,6 +100,7 @@ const BookCover: React.FC<BookCoverProps> = memo<BookCoverProps>(
         hideCovers ||
         !book.coverImageUrl ||
         metadataCoverImageUrl ||
+        (book.metadata?.calibreSource && !calibreCover) ||
         matchingThumbnail ||
         !appService?.supportsCoverThumbnailOptimization
       ) {
@@ -113,6 +117,8 @@ const BookCover: React.FC<BookCoverProps> = memo<BookCoverProps>(
       matchingThumbnail,
       metadataCoverImageUrl,
       hideCovers,
+      book.metadata?.calibreSource,
+      calibreCover,
     ]);
 
     return (

@@ -1,5 +1,5 @@
 import { useCallback, type Dispatch, type SetStateAction } from 'react';
-import type { Book } from '@/types/book';
+import type { Book, BookFormat } from '@/types/book';
 import type { EnvConfigType } from '@/services/environment';
 import type { AppService } from '@/types/system';
 import { createProgressThrottle, toProgressPercent, type ProgressPayload } from '@/utils/transfer';
@@ -13,6 +13,9 @@ import {
 } from '@/services/sync/cloudSyncProvider';
 import { isSyncCategoryEnabled } from '@/services/sync/syncCategories';
 import { runFileBookDownload, runFileBookUpload } from '@/services/sync/file/runLibrarySync';
+import { downloadCalibreBook, findCalibreServer } from '@/services/calibre/download';
+import { calibreErrorMessage } from '@/services/calibre/librarySync';
+import { useLibraryStore } from '@/store/libraryStore';
 
 /**
  * One throttle runs per in-flight transfer, and every emit re-renders the
@@ -22,6 +25,7 @@ import { runFileBookDownload, runFileBookUpload } from '@/services/sync/file/run
 const PROGRESS_THROTTLE_MS = 500;
 
 interface BookDownloadOptions {
+  format?: BookFormat;
   redownload?: boolean;
   queued?: boolean;
   // Bulk callers (the select-mode Download action, #5244) report one summary
@@ -151,6 +155,43 @@ export const useBookTransferActions = (
       const settingsNow = useSettingsStore.getState().settings;
       const backends = getActiveFileSyncBackends(settingsNow);
       const readest = isReadestCloudEnabled(settingsNow);
+      const source = book.metadata?.calibreSource;
+      // A downloaded Calibre book can also have been uploaded to a cloud mirror.
+      // Peers without this device-local connection must still be able to fetch that copy.
+      if (
+        source &&
+        (findCalibreServer(source.serverId) ||
+          downloadOptions.format ||
+          (!book.uploadedAt && !backends.length))
+      ) {
+        if (!appService) return false;
+        const tracker = trackProgress(book.hash);
+        try {
+          const file = await downloadCalibreBook(
+            appService,
+            book,
+            downloadOptions.format ?? (redownload ? book.format : undefined),
+            tracker.onProgress,
+          );
+          const current = useLibraryStore.getState().getBookByHash(book.hash);
+          if (!current || current.deletedAt) return false;
+          const updated = { ...current, ...file };
+          const state = useLibraryStore.getState();
+          const library = state.library.map((row) => (row.hash === updated.hash ? updated : row));
+          state.setLibrary(library);
+          await appService.saveLibraryBooks(library);
+          return true;
+        } catch (error) {
+          if (!silent)
+            eventDispatcher.dispatch('toast', {
+              type: 'error',
+              message: _(calibreErrorMessage(error)),
+            });
+          return false;
+        } finally {
+          tracker.done();
+        }
+      }
       // `uploadedAt` proves that some cloud copy exists, but it does not encode
       // provenance: the file-sync engine stamps it for WebDAV/Drive/S3/etc. too.
       // Try the enabled file mirrors first so a metadata-only shelf row is not

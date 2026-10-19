@@ -125,5 +125,7 @@
   "{{count}} pages left_one": "{{count}} page left",
   "{{count}} pages left_other": "{{count}} pages left",
   "{{time}} and {{count}} pages left_one": "{{time}} and {{count}} page left",
-  "{{time}} and {{count}} pages left_other": "{{time}} and {{count}} pages left"
+  "{{time}} and {{count}} pages left_other": "{{time}} and {{count}} pages left",
+  "Syncing Calibre: {{count}} books_one": "Syncing Calibre: {{count}} book",
+  "Syncing Calibre: {{count}} books_other": "Syncing Calibre: {{count}} books"
 }

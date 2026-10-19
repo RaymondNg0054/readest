@@ -51,7 +51,8 @@ vi.mock('@/store/settingsStore', () => ({
 }));
 
 vi.mock('@/hooks/useTranslation', () => ({
-  useTranslation: () => (text: string) => text,
+  useTranslation: () => (text: string, options?: Record<string, string>) =>
+    text.replace(/{{(\w+)}}/g, (_, key: string) => options?.[key] ?? ''),
 }));
 
 vi.mock('@/app/library/hooks/useOpenBook', () => ({
@@ -199,5 +200,29 @@ describe('library context menu on Linux desktop (issue #5360)', () => {
 
     await vi.waitFor(() => expect(popupSpy).toHaveBeenCalledTimes(1));
     expect(screen.queryByRole('menuitem')).toBeNull();
+  });
+
+  it('offers each Calibre format of a book that is not downloaded yet', async () => {
+    const stub: Book = {
+      ...book,
+      downloadedAt: undefined,
+      metadata: {
+        title: 'Test Book',
+        author: 'Test Author',
+        language: 'en',
+        calibreSource: { serverId: 's', libraryId: 'l', bookId: '1', formats: ['EPUB', 'PDF'] },
+      },
+    };
+    const { props } = renderItem({ item: stub });
+
+    openContextMenu();
+
+    const labels = (await screen.findAllByRole('menuitem')).map((el) => el.textContent);
+    expect(labels).toContain('Download EPUB');
+    expect(labels).not.toContain('Download Book');
+    fireEvent.click(screen.getByRole('menuitem', { name: 'Download PDF' }));
+    await vi.waitFor(() =>
+      expect(props.handleBookDownload).toHaveBeenCalledWith(stub, { format: 'PDF' }),
+    );
   });
 });

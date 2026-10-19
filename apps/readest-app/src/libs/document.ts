@@ -5,6 +5,7 @@ import { getOSPlatform } from '@/utils/misc';
 import { installPDFImageShrink } from '@/libs/pdfImageShrink';
 import { stripDuplicateMarker } from '@/utils/path';
 import type { WidePagesOptions } from '@/utils/spread';
+import type { CalibreSource } from '@/types/calibre';
 import * as epubcfi from 'foliate-js/epubcfi.js';
 
 export const CFI = epubcfi;
@@ -99,6 +100,7 @@ export type BookMetadata = {
   coverImageBlobUrl?: string;
 
   calibreColumns?: CalibreCustomColumn[];
+  calibreSource?: CalibreSource;
   feedUrl?: string;
 
   // Audiobookshelf mirrors. An ABS stub is fileless: its identity is the

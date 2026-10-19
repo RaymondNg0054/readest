@@ -46,7 +46,7 @@ export const useMakeBookAvailable = ({
       // so a row it has not reconciled yet (or one poisoned by a pre-#5087
       // client, #5265) can be sitting on the mirror without carrying the stamp.
       // Ask the mirror before giving up on it.
-      if (!book.uploadedAt && !hasFileSyncMirror()) return true;
+      if (!book.uploadedAt && !hasFileSyncMirror() && !book.metadata?.calibreSource) return true;
       // The row's `downloadedAt` is not proof that the file is still here: a
       // "Remove from Device Only" evicts the file, and an in-place original can
       // be moved or deleted behind our back. Probe, and re-fetch from the cloud
@@ -63,7 +63,8 @@ export const useMakeBookAvailable = ({
       const loadingTimeout = setTimeout(() => setLoading(true), 200);
       try {
         available = await handleBookDownload(book, { queued: false });
-        await updateBook(envConfig, book);
+        // Calibre commits a patch against the live row after I/O, not this captured row.
+        if (!book.metadata?.calibreSource) await updateBook(envConfig, book);
       } finally {
         if (loadingTimeout) clearTimeout(loadingTimeout);
         setLoading(false);

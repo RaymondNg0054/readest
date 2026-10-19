@@ -15,7 +15,7 @@ import { getSeriesIndex } from '@/utils/book';
 import { throttle } from '@/utils/throttle';
 import { LibraryCoverFitType, LibraryViewModeType } from '@/types/settings';
 import { FILE_REVEAL_LABELS, FILE_REVEAL_PLATFORMS } from '@/utils/os';
-import { Book, BooksGroup, ReadingStatus } from '@/types/book';
+import { Book, BookFormat, BooksGroup, ReadingStatus } from '@/types/book';
 import {
   getBookContextMenuItemIds,
   type BookContextMenuItemId,
@@ -95,7 +95,7 @@ interface BookshelfItemProps {
   handleGroupBooks: () => void;
   handleBookDownload: (
     book: Book,
-    options?: { redownload?: boolean; queued?: boolean },
+    options?: { redownload?: boolean; queued?: boolean; format?: BookFormat },
   ) => Promise<boolean>;
   handleBookUpload: (book: Book, syncBooks?: boolean) => Promise<boolean>;
   handleBookDelete: (book: Book, syncBooks?: boolean) => Promise<boolean>;
@@ -276,10 +276,20 @@ const BookshelfItem: React.FC<BookshelfItemProps> = ({
         },
       },
     };
-    return getBookContextMenuItemIds(book, {
+    const items = getBookContextMenuItemIds(book, {
       localSend: isTauriAppPlatform() && isLocalSendEnabled(),
       absOffline: isTauriAppPlatform(),
     }).map((id) => itemOptions[id]);
+    if (book.metadata?.calibreSource && !book.downloadedAt) {
+      const formatItems = book.metadata.calibreSource.formats.map((format) => ({
+        text: _('Download {{format}}', { format }),
+        action: async () => {
+          await handleBookDownload(book, { format });
+        },
+      }));
+      items.splice(items.indexOf(itemOptions.download), 1, ...formatItems);
+    }
+    return items;
   };
 
   const buildGroupMenuItems = (group: BooksGroup): BookContextMenuItem[] => {

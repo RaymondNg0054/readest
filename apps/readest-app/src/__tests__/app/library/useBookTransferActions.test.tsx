@@ -6,6 +6,9 @@ import type { Book } from '@/types/book';
 import type { EnvConfigType } from '@/services/environment';
 import type { AppService } from '@/types/system';
 import { INDETERMINATE_PROGRESS, type ProgressHandler } from '@/utils/transfer';
+import { useLibraryStore } from '@/store/libraryStore';
+import { useSettingsStore } from '@/store/settingsStore';
+import { CalibreClient } from '@/services/calibre/client';
 
 /**
  * Issue #5062 — cloud sync providers are independently selectable, so a
@@ -246,6 +249,81 @@ describe('useBookTransferActions download routing (issue #5062)', () => {
     expect(queueDownload).not.toHaveBeenCalled();
     expect(updateBook).toHaveBeenCalledWith(envConfig, book);
     expect(ok).toBe(true);
+  });
+
+  it('can download an uploaded Calibre book on a peer without that device-local connection', async () => {
+    const downloadBook = vi.fn(async () => {});
+    const { result } = setup({ downloadBook, exists: async () => false } as unknown as AppService);
+    const book = makeBook({
+      uploadedAt: 12345,
+      metadata: {
+        title: 'Book',
+        author: 'Author',
+        language: 'en',
+        calibreSource: {
+          serverId: 'not-configured',
+          libraryId: 'Library',
+          bookId: '1',
+          formats: ['EPUB'],
+        },
+      },
+    });
+    expect(await result.current.handleBookDownload(book)).toBe(true);
+    expect(downloadBook).toHaveBeenCalled();
+  });
+
+  it('honors explicit redownload for a Calibre book whose managed file already exists', async () => {
+    const previous = useSettingsStore.getState().settings;
+    useSettingsStore.setState({
+      settings: {
+        ...previous,
+        calibreServers: [
+          {
+            id: 'calibre',
+            name: 'Server',
+            url: 'https://books.test',
+            kind: 'calibre',
+            libraryId: 'Library',
+            enabled: true,
+            syncProgress: false,
+          },
+        ],
+      },
+    });
+    const request = vi
+      .spyOn(CalibreClient.prototype, 'request')
+      .mockResolvedValue(new Response('ebook'));
+    try {
+      const service = {
+        exists: async () => true,
+        createDir: async () => {},
+        writeFile: async () => {},
+        copyFile: async () => {},
+        deleteFile: async () => {},
+        saveLibraryBooks: async () => {},
+      } as unknown as AppService;
+      const { result } = setup(service);
+      const book = makeBook({
+        downloadedAt: 1,
+        metadata: {
+          title: 'Book',
+          author: 'Author',
+          language: 'en',
+          calibreSource: {
+            serverId: 'calibre',
+            libraryId: 'Library',
+            bookId: '1',
+            formats: ['EPUB'],
+          },
+        },
+      });
+      useLibraryStore.getState().setLibrary([book]);
+      expect(await result.current.handleBookDownload(book, { redownload: true })).toBe(true);
+      expect(request).toHaveBeenCalledTimes(1);
+    } finally {
+      request.mockRestore();
+      useSettingsStore.setState({ settings: previous });
+    }
   });
 
   it('falls back to a file backend when the book is not in Readest Cloud storage', async () => {
