@@ -263,6 +263,7 @@ describe('sanitizeSettingsForBackup - credentials', () => {
     expect(sanitizeSettingsForBackup(input).calibreServers?.[0]).toMatchObject({
       enabled: false,
       syncProgress: false,
+      uploadBooks: false,
     });
     expect(sanitizeSettingsForBackup(input).calibreServers?.[0]?.password).toBeUndefined();
     expect(

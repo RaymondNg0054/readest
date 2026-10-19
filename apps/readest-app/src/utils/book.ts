@@ -387,6 +387,12 @@ export const bookGroupDiffers = (current: BookGroupFields, resolved: BookGroupFi
 // Callers must not mutate the existing book in place: <BookCover> is memoized
 // and compares fields off the book, so an in-place mutation makes the memo's
 // previous snapshot point to the same object and skips re-rendering the cover.
+/** Calibre links live in metadata but are neither editable nor read from the file. */
+export const withCalibreLink = (book: Book, metadata: BookMetadata): BookMetadata => {
+  const { calibreSource, calibreSentTo } = book.metadata ?? {};
+  return calibreSource || calibreSentTo ? { ...metadata, calibreSource, calibreSentTo } : metadata;
+};
+
 export const getBookWithUpdatedMetadata = (
   book: Book,
   metadata: BookMetadata,
@@ -394,9 +400,7 @@ export const getBookWithUpdatedMetadata = (
 ): Book => {
   const updatedBook: Book = {
     ...book,
-    metadata: book.metadata?.calibreSource
-      ? { ...metadata, calibreSource: book.metadata.calibreSource }
-      : metadata,
+    metadata: withCalibreLink(book, metadata),
     ...(tags ? { tags: [...tags] } : {}),
     title: formatTitle(metadata.title),
     author: formatAuthors(metadata.author),

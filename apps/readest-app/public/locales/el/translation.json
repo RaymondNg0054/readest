@@ -2642,5 +2642,12 @@
   "Calibre returned an empty book file.": "Το Calibre επέστρεψε κενό αρχείο βιβλίου.",
   "Calibre sync failed.": "Ο συγχρονισμός του Calibre απέτυχε.",
   "Library is not ready. Please sync again.": "Η βιβλιοθήκη δεν είναι έτοιμη. Συγχρονίστε ξανά.",
-  "Invalid Calibre-Web OPDS feed. Check OPDS access and authentication.": "Μη έγκυρη ροή OPDS του Calibre-Web. Ελέγξτε την πρόσβαση OPDS και τον έλεγχο ταυτότητας."
+  "Invalid Calibre-Web OPDS feed. Check OPDS access and authentication.": "Μη έγκυρη ροή OPDS του Calibre-Web. Ελέγξτε την πρόσβαση OPDS και τον έλεγχο ταυτότητας.",
+  "Send Local Books to Calibre": "Αποστολή τοπικών βιβλίων στο Calibre",
+  "Books already on the server are linked instead of sent again.": "Τα βιβλία που υπάρχουν ήδη στον διακομιστή συνδέονται αντί να αποστέλλονται ξανά.",
+  "Sending books to Calibre: {{sent}}/{{total}}": "Αποστολή βιβλίων στο Calibre: {{sent}}/{{total}}",
+  "Sent to Calibre: {{sent}}": "Στάλθηκαν στο Calibre: {{sent}}",
+  "Sending books to Calibre-Web requires the desktop or mobile app.": "Η αποστολή βιβλίων στο Calibre-Web απαιτεί την εφαρμογή για υπολογιστή ή κινητό.",
+  "Calibre-Web login failed. Check your credentials.": "Η σύνδεση στο Calibre-Web απέτυχε. Ελέγξτε τα διαπιστευτήριά σας.",
+  "Calibre-Web uploads are off or this account cannot upload.": "Οι μεταφορτώσεις στο Calibre-Web είναι απενεργοποιημένες ή αυτός ο λογαριασμός δεν μπορεί να μεταφορτώσει."
 }

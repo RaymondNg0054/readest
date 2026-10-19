@@ -101,6 +101,9 @@ export type BookMetadata = {
 
   calibreColumns?: CalibreCustomColumn[];
   calibreSource?: CalibreSource;
+  // Calibre server id this book was sent to while its server id is unknown
+  // (Calibre-Web Automated queues ingestion). Sync links it once listed.
+  calibreSentTo?: string;
   feedUrl?: string;
 
   // Audiobookshelf mirrors. An ABS stub is fileless: its identity is the

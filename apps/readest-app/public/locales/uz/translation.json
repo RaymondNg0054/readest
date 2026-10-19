@@ -2642,5 +2642,12 @@
   "Calibre returned an empty book file.": "Calibre boʻsh kitob faylini qaytardi.",
   "Calibre sync failed.": "Calibre sinxronlash muvaffaqiyatsiz.",
   "Library is not ready. Please sync again.": "Kutubxona tayyor emas. Qayta sinxronlang.",
-  "Invalid Calibre-Web OPDS feed. Check OPDS access and authentication.": "Calibre-Web OPDS lentasi notoʻgʻri. OPDS kirish huquqi va autentifikatsiyani tekshiring."
+  "Invalid Calibre-Web OPDS feed. Check OPDS access and authentication.": "Calibre-Web OPDS lentasi notoʻgʻri. OPDS kirish huquqi va autentifikatsiyani tekshiring.",
+  "Send Local Books to Calibre": "Mahalliy kitoblarni Calibre’ga yuborish",
+  "Books already on the server are linked instead of sent again.": "Serverda allaqachon mavjud kitoblar qayta yuborilmasdan bogʻlanadi.",
+  "Sending books to Calibre: {{sent}}/{{total}}": "Kitoblar Calibre’ga yuborilmoqda: {{sent}}/{{total}}",
+  "Sent to Calibre: {{sent}}": "Calibre’ga yuborildi: {{sent}}",
+  "Sending books to Calibre-Web requires the desktop or mobile app.": "Kitoblarni Calibre-Web’ga yuborish uchun desktop yoki mobil ilova kerak.",
+  "Calibre-Web login failed. Check your credentials.": "Calibre-Web’ga kirib boʻlmadi. Hisob maʼlumotlarini tekshiring.",
+  "Calibre-Web uploads are off or this account cannot upload.": "Calibre-Web’ga yuklash oʻchirilgan yoki bu hisob yuklay olmaydi."
 }

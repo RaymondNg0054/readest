@@ -183,6 +183,7 @@ export function sanitizeSettingsForBackup(
           ...server,
           enabled: false,
           syncProgress: false,
+          uploadBooks: false,
         }),
       );
     }

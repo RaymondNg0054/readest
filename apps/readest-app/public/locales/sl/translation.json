@@ -2774,5 +2774,12 @@
   "Calibre returned an empty book file.": "Calibre je vrnil prazno datoteko knjige.",
   "Calibre sync failed.": "Sinhronizacija Calibre ni uspela.",
   "Library is not ready. Please sync again.": "Knjižnica ni pripravljena. Sinhronizirajte znova.",
-  "Invalid Calibre-Web OPDS feed. Check OPDS access and authentication.": "Neveljaven vir OPDS Calibre-Web. Preverite dostop do OPDS in preverjanje pristnosti."
+  "Invalid Calibre-Web OPDS feed. Check OPDS access and authentication.": "Neveljaven vir OPDS Calibre-Web. Preverite dostop do OPDS in preverjanje pristnosti.",
+  "Send Local Books to Calibre": "Pošlji lokalne knjige v Calibre",
+  "Books already on the server are linked instead of sent again.": "Knjige, ki so že na strežniku, se povežejo namesto ponovnega pošiljanja.",
+  "Sending books to Calibre: {{sent}}/{{total}}": "Pošiljanje knjig v Calibre: {{sent}}/{{total}}",
+  "Sent to Calibre: {{sent}}": "Poslano v Calibre: {{sent}}",
+  "Sending books to Calibre-Web requires the desktop or mobile app.": "Pošiljanje knjig v Calibre-Web zahteva namizno ali mobilno aplikacijo.",
+  "Calibre-Web login failed. Check your credentials.": "Prijava v Calibre-Web ni uspela. Preverite poverilnice.",
+  "Calibre-Web uploads are off or this account cannot upload.": "Nalaganje v Calibre-Web je izklopljeno ali ta račun ne more nalagati."
 }

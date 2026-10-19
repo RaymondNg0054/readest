@@ -2576,5 +2576,12 @@
   "Calibre returned an empty book file.": "Calibreが空の書籍ファイルを返しました。",
   "Calibre sync failed.": "Calibreの同期に失敗しました。",
   "Library is not ready. Please sync again.": "ライブラリの準備ができていません。もう一度同期してください。",
-  "Invalid Calibre-Web OPDS feed. Check OPDS access and authentication.": "Calibre-WebのOPDSフィードが無効です。OPDSへのアクセスと認証を確認してください。"
+  "Invalid Calibre-Web OPDS feed. Check OPDS access and authentication.": "Calibre-WebのOPDSフィードが無効です。OPDSへのアクセスと認証を確認してください。",
+  "Send Local Books to Calibre": "ローカルの書籍をCalibreに送信",
+  "Books already on the server are linked instead of sent again.": "サーバーにすでにある書籍は、再送信せずにリンクされます。",
+  "Sending books to Calibre: {{sent}}/{{total}}": "Calibreに書籍を送信中：{{sent}}/{{total}}",
+  "Sent to Calibre: {{sent}}": "Calibreに送信：{{sent}}",
+  "Sending books to Calibre-Web requires the desktop or mobile app.": "Calibre-Webへの書籍の送信には、デスクトップまたはモバイルアプリが必要です。",
+  "Calibre-Web login failed. Check your credentials.": "Calibre-Webへのログインに失敗しました。認証情報を確認してください。",
+  "Calibre-Web uploads are off or this account cannot upload.": "Calibre-Webのアップロードがオフになっているか、このアカウントにはアップロード権限がありません。"
 }

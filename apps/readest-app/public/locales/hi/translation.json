@@ -2642,5 +2642,12 @@
   "Calibre returned an empty book file.": "Calibre ने खाली पुस्तक फ़ाइल लौटाई।",
   "Calibre sync failed.": "Calibre सिंक विफल हुआ।",
   "Library is not ready. Please sync again.": "लाइब्रेरी तैयार नहीं है। कृपया फिर से सिंक करें।",
-  "Invalid Calibre-Web OPDS feed. Check OPDS access and authentication.": "अमान्य Calibre-Web OPDS फ़ीड। OPDS एक्सेस और प्रमाणीकरण जांचें।"
+  "Invalid Calibre-Web OPDS feed. Check OPDS access and authentication.": "अमान्य Calibre-Web OPDS फ़ीड। OPDS एक्सेस और प्रमाणीकरण जांचें।",
+  "Send Local Books to Calibre": "स्थानीय पुस्तकें Calibre को भेजें",
+  "Books already on the server are linked instead of sent again.": "सर्वर पर पहले से मौजूद पुस्तकों को फिर से भेजने के बजाय लिंक किया जाता है।",
+  "Sending books to Calibre: {{sent}}/{{total}}": "Calibre को पुस्तकें भेजी जा रही हैं: {{sent}}/{{total}}",
+  "Sent to Calibre: {{sent}}": "Calibre को भेजी गईं: {{sent}}",
+  "Sending books to Calibre-Web requires the desktop or mobile app.": "Calibre-Web को पुस्तकें भेजने के लिए डेस्कटॉप या मोबाइल ऐप आवश्यक है।",
+  "Calibre-Web login failed. Check your credentials.": "Calibre-Web लॉगिन विफल। अपने क्रेडेंशियल जांचें।",
+  "Calibre-Web uploads are off or this account cannot upload.": "Calibre-Web अपलोड बंद हैं या यह खाता अपलोड नहीं कर सकता।"
 }

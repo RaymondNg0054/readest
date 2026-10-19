@@ -66,6 +66,7 @@ const digestChallenges = new Map<string, string>();
 /** Direct client: self-hosted credentials never pass through a public proxy. TLS stays verified. */
 export class CalibreClient {
   private base: string;
+  private cookies = new Map<string, string>();
   private metadata = new Map<string, CalibreBookRecord>();
   private pages = new Map<
     string,
@@ -111,6 +112,12 @@ export class CalibreClient {
     const cachedChallenge = username ? digestChallenges.get(challengeKey) : undefined;
     if (cachedChallenge) headers.set('Authorization', await digest(cachedChallenge));
     else if (username) headers.set('Authorization', createBasicAuth(username, password ?? ''));
+    if (this.cookies.size)
+      headers.set(
+        'Cookie',
+        Array.from(this.cookies, ([name, value]) => `${name}=${value}`).join('; '),
+      );
+    const manual = options.redirect === 'manual';
     const fetcher = isTauriAppPlatform() ? tauriFetch : globalThis.fetch;
     const send = async () => {
       // AbortSignal.timeout is absent on supported older WebKit versions.
@@ -119,8 +126,10 @@ export class CalibreClient {
       try {
         return await fetcher(url, {
           ...options,
+          // Native HTTP uses maxRedirections rather than Request.redirect.
+          ...(manual && isTauriAppPlatform() ? { maxRedirections: 0 } : {}),
           headers: new Headers(headers),
-          redirect: 'error',
+          redirect: manual ? 'manual' : 'error',
           signal: options.signal ?? controller.signal,
         });
       } finally {
@@ -138,8 +147,85 @@ export class CalibreClient {
       headers.set('Authorization', await digest(challenge));
       res = await send();
     }
-    if (!res.ok && res.status !== 304) throw new CalibreHttpError(res.status);
+    if (this.server.kind === 'calibre-web') this.saveCookies(res.headers);
+    if (!res.ok && res.status !== 304 && !(manual && res.status >= 300 && res.status < 400))
+      throw new CalibreHttpError(res.status);
     return res;
+  }
+
+  // Calibre-Web uploads need its web session. Native HTTP keeps no cookie jar.
+  private saveCookies(headers: Headers) {
+    // Older WebKit joins Set-Cookie headers, and Expires values contain commas.
+    const cookies =
+      headers.getSetCookie?.() ?? (headers.get('Set-Cookie') ?? '').split(/,(?=\s*[^;,\s]+=)/);
+    for (const cookie of cookies) {
+      const pair = cookie.split(';')[0] ?? '';
+      const at = pair.indexOf('=');
+      if (at > 0) this.cookies.set(pair.slice(0, at).trim(), pair.slice(at + 1).trim());
+    }
+  }
+
+  /**
+   * Adds a book file. Without a bookId, Calibre refused a duplicate (title and
+   * authors are read from the file) or Calibre-Web Automated queued ingestion.
+   */
+  async addBook(file: File): Promise<{ bookId?: string; title?: string; authors?: string[] }> {
+    // Managed books are named "<hash>/<title>.<ext>".
+    const name = file.name.split(/[\\/]/).pop()!;
+    if (this.server.kind === 'calibre-web') return { bookId: await this.webUpload(file, name) };
+    const data = (await (
+      await this.request(
+        this.url(
+          `cdb/add-book/${Date.now()}/n/${encodeURIComponent(name)}/${encodeURIComponent(this.server.libraryId)}`,
+        ),
+        { method: 'POST', body: file },
+      )
+    ).json()) as { book_id?: number; title?: string; authors?: string[] };
+    return { bookId: data.book_id?.toString(), title: data.title, authors: data.authors };
+  }
+
+  // Calibre-Web has no upload API: sign in through its form, then post the upload form.
+  private async webUpload(file: File, name: string): Promise<string | undefined> {
+    const page = async (path: string, init: RequestInit = {}) => {
+      const headers = new Headers(init.headers);
+      headers.set('Accept', 'text/html');
+      const res = await this.request(this.url(path), { ...init, headers, redirect: 'manual' });
+      return { res, doc: new DOMParser().parseFromString(await res.text(), 'text/html') };
+    };
+    const token = (doc: Document) =>
+      doc.querySelector<HTMLInputElement>('input[name="csrf_token"]')?.value ?? '';
+    const canUpload = (doc?: Document) => !!doc?.querySelector('input[name="btn-upload"]');
+    let home = this.cookies.size ? (await page('')).doc : undefined;
+    if (!canUpload(home)) {
+      const login = await page('login');
+      const { res } = await page('login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+          username: this.server.username ?? '',
+          password: this.server.password ?? '',
+          csrf_token: token(login.doc),
+          next: new URL(this.url('')).pathname,
+        }),
+      });
+      if (res.status < 300 || res.status >= 400)
+        throw new Error(_('Calibre-Web login failed. Check your credentials.'));
+      home = (await page('')).doc;
+    }
+    const csrf = token(home!);
+    if (!csrf || !canUpload(home))
+      throw new Error(_('Calibre-Web uploads are off or this account cannot upload.'));
+    const body = new FormData();
+    body.append('csrf_token', csrf);
+    body.append('btn-upload', file, name);
+    const res = await this.request(this.url('upload'), {
+      method: 'POST',
+      headers: { 'X-CSRFToken': csrf, 'X-Requested-With': 'XMLHttpRequest' },
+      body,
+      redirect: 'manual',
+    });
+    const { location } = (await res.json()) as { location?: string };
+    return location?.match(/\/book\/(\d+)\/?$/)?.[1];
   }
 
   async getLibraries(): Promise<{ id: string; name: string }[]> {

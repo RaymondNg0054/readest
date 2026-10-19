@@ -2642,5 +2642,12 @@
   "Calibre returned an empty book file.": "Calibre یک فایل کتاب خالی برگرداند.",
   "Calibre sync failed.": "همگام‌سازی Calibre ناموفق بود.",
   "Library is not ready. Please sync again.": "کتابخانه آماده نیست. لطفاً دوباره همگام‌سازی کنید.",
-  "Invalid Calibre-Web OPDS feed. Check OPDS access and authentication.": "فید OPDS در Calibre-Web نامعتبر است. دسترسی OPDS و احراز هویت را بررسی کنید."
+  "Invalid Calibre-Web OPDS feed. Check OPDS access and authentication.": "فید OPDS در Calibre-Web نامعتبر است. دسترسی OPDS و احراز هویت را بررسی کنید.",
+  "Send Local Books to Calibre": "ارسال کتاب‌های محلی به Calibre",
+  "Books already on the server are linked instead of sent again.": "کتاب‌هایی که از قبل روی سرور هستند، به‌جای ارسال دوباره پیوند داده می‌شوند.",
+  "Sending books to Calibre: {{sent}}/{{total}}": "در حال ارسال کتاب‌ها به Calibre: {{sent}}/{{total}}",
+  "Sent to Calibre: {{sent}}": "ارسال‌شده به Calibre: {{sent}}",
+  "Sending books to Calibre-Web requires the desktop or mobile app.": "ارسال کتاب به Calibre-Web به برنامه دسکتاپ یا موبایل نیاز دارد.",
+  "Calibre-Web login failed. Check your credentials.": "ورود به Calibre-Web ناموفق بود. اعتبارنامه‌های خود را بررسی کنید.",
+  "Calibre-Web uploads are off or this account cannot upload.": "بارگذاری در Calibre-Web خاموش است یا این حساب اجازه بارگذاری ندارد."
 }

@@ -124,8 +124,32 @@ describe('Calibre connection settings', () => {
     });
     render(<CalibreForm onBack={() => {}} />);
     expect(screen.queryByText('Sync Reading Position')).toBeNull();
+    expect(screen.getByText('Send Local Books to Calibre')).toBeTruthy();
     expect(screen.getByText('Automatic Library Sync')).toBeTruthy();
     fireEvent.click(screen.getByText('Automatic Library Sync'));
     expect(useSettingsStore.getState().settings.calibreServers?.[0]?.enabled).toBe(false);
+  });
+  it('sends local books by default and lets the user turn it off', () => {
+    useSettingsStore.setState({
+      settings: {
+        calibreServers: [
+          {
+            id: 'server',
+            name: 'Calibre',
+            url: 'https://books.test',
+            kind: 'calibre',
+            libraryId: 'library',
+            username: 'reader',
+            enabled: true,
+            syncProgress: false,
+          },
+        ],
+      } as SystemSettings,
+    });
+    render(<CalibreForm onBack={() => {}} />);
+    const label = screen.getByText('Send Local Books to Calibre');
+    expect(label.closest('label')?.querySelector('input')?.checked).toBe(true);
+    fireEvent.click(label);
+    expect(useSettingsStore.getState().settings.calibreServers?.[0]?.uploadBooks).toBe(false);
   });
 });

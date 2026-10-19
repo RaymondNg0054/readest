@@ -2642,5 +2642,12 @@
   "Calibre returned an empty book file.": "Calibre hat eine leere Buchdatei zurückgegeben.",
   "Calibre sync failed.": "Calibre-Synchronisierung fehlgeschlagen.",
   "Library is not ready. Please sync again.": "Bibliothek ist nicht bereit. Bitte erneut synchronisieren.",
-  "Invalid Calibre-Web OPDS feed. Check OPDS access and authentication.": "Ungültiger Calibre-Web-OPDS-Feed. Überprüfen Sie den OPDS-Zugriff und die Authentifizierung."
+  "Invalid Calibre-Web OPDS feed. Check OPDS access and authentication.": "Ungültiger Calibre-Web-OPDS-Feed. Überprüfen Sie den OPDS-Zugriff und die Authentifizierung.",
+  "Send Local Books to Calibre": "Lokale Bücher an Calibre senden",
+  "Books already on the server are linked instead of sent again.": "Bücher, die bereits auf dem Server sind, werden verknüpft statt erneut gesendet.",
+  "Sending books to Calibre: {{sent}}/{{total}}": "Bücher werden an Calibre gesendet: {{sent}}/{{total}}",
+  "Sent to Calibre: {{sent}}": "An Calibre gesendet: {{sent}}",
+  "Sending books to Calibre-Web requires the desktop or mobile app.": "Zum Senden von Büchern an Calibre-Web wird die Desktop- oder Mobil-App benötigt.",
+  "Calibre-Web login failed. Check your credentials.": "Calibre-Web-Anmeldung fehlgeschlagen. Überprüfen Sie Ihre Zugangsdaten.",
+  "Calibre-Web uploads are off or this account cannot upload.": "Hochladen in Calibre-Web ist deaktiviert oder dieses Konto darf nicht hochladen."
 }

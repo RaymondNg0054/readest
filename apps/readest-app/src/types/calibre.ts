@@ -10,6 +10,8 @@ export interface CalibreServer {
   libraryId: string;
   enabled: boolean;
   syncProgress: boolean;
+  /** Send local books the server does not have. On unless set to false. */
+  uploadBooks?: boolean;
 }
 
 /** No URLs or credentials: this survives downloading the file and metadata sync. */

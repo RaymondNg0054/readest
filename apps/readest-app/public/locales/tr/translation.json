@@ -2649,5 +2649,12 @@
   "Calibre returned an empty book file.": "Calibre boş bir kitap dosyası döndürdü.",
   "Calibre sync failed.": "Calibre eşitlemesi başarısız oldu.",
   "Library is not ready. Please sync again.": "Kütüphane hazır değil. Lütfen tekrar eşitleyin.",
-  "Invalid Calibre-Web OPDS feed. Check OPDS access and authentication.": "Geçersiz Calibre-Web OPDS beslemesi. OPDS erişimini ve kimlik doğrulamayı kontrol edin."
+  "Invalid Calibre-Web OPDS feed. Check OPDS access and authentication.": "Geçersiz Calibre-Web OPDS beslemesi. OPDS erişimini ve kimlik doğrulamayı kontrol edin.",
+  "Send Local Books to Calibre": "Yerel Kitapları Calibre'ye Gönder",
+  "Books already on the server are linked instead of sent again.": "Sunucuda zaten bulunan kitaplar yeniden gönderilmek yerine bağlanır.",
+  "Sending books to Calibre: {{sent}}/{{total}}": "Kitaplar Calibre'ye gönderiliyor: {{sent}}/{{total}}",
+  "Sent to Calibre: {{sent}}": "Calibre'ye gönderilen: {{sent}}",
+  "Sending books to Calibre-Web requires the desktop or mobile app.": "Kitapları Calibre-Web'e göndermek masaüstü veya mobil uygulamayı gerektirir.",
+  "Calibre-Web login failed. Check your credentials.": "Calibre-Web girişi başarısız oldu. Kimlik bilgilerinizi kontrol edin.",
+  "Calibre-Web uploads are off or this account cannot upload.": "Calibre-Web yüklemeleri kapalı veya bu hesap yükleme yapamıyor."
 }

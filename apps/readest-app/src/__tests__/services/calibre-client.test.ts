@@ -162,6 +162,74 @@ describe('Calibre transport and snapshots', () => {
     expect(fetcher.mock.calls[2]?.[0]).toContain('category_urls=false');
   });
 
+  it("adds a book through the content server's add-book API without duplicates", async () => {
+    const fetcher = vi
+      .fn()
+      .mockResolvedValueOnce(json({ book_id: 9, title: 'A Book', authors: ['Author'] }))
+      .mockResolvedValueOnce(
+        json({ title: 'A Book', authors: ['Author'], duplicates: [{ title: 'A Book' }] }),
+      );
+    vi.stubGlobal('fetch', fetcher);
+    const client = new CalibreClient(server);
+    // Managed files are named after their hash folder; Calibre gets the base name.
+    const file = new File(['epub'], 'abc123/A Book.epub');
+    expect(await client.addBook(file)).toEqual({
+      bookId: '9',
+      title: 'A Book',
+      authors: ['Author'],
+    });
+    const [url, options] = fetcher.mock.calls[0]!;
+    expect(url).toMatch(/\/mount\/cdb\/add-book\/\d+\/n\/A%20Book\.epub\/My%20Library$/);
+    expect(options.method).toBe('POST');
+    expect(await (options.body as Blob).text()).toBe('epub');
+    expect((await client.addBook(file)).bookId).toBeUndefined();
+  });
+
+  it('uploads to Calibre-Web through its login and CSRF form, keeping the session cookie', async () => {
+    const page = (token: string, upload = '') =>
+      new Response(`<form><input name="csrf_token" value="${token}">${upload}</form>`, {
+        headers: { 'Set-Cookie': 'session=anonymous; Path=/; HttpOnly' },
+      });
+    const fetcher = vi
+      .fn()
+      .mockResolvedValueOnce(page('login-token'))
+      .mockResolvedValueOnce(
+        new Response(null, {
+          status: 302,
+          headers: { Location: '/mount/', 'Set-Cookie': 'session=signed-in; Path=/' },
+        }),
+      )
+      .mockResolvedValueOnce(
+        new Response(
+          '<input name="csrf_token" value="upload-token"><input type="file" name="btn-upload">',
+        ),
+      )
+      .mockResolvedValueOnce(json({ location: '/mount/admin/book/12' }))
+      .mockResolvedValueOnce(
+        new Response(
+          '<input name="csrf_token" value="next-token"><input type="file" name="btn-upload">',
+        ),
+      )
+      .mockResolvedValueOnce(json({ location: '/mount/tasks' }));
+    vi.stubGlobal('fetch', fetcher);
+    const client = new CalibreClient({ ...server, kind: 'calibre-web' });
+    const file = new File(['epub'], 'abc123/A Book.epub');
+    expect((await client.addBook(file)).bookId).toBe('12');
+    const login = fetcher.mock.calls[1]!;
+    expect(login[0]).toBe('https://books.test/mount/login');
+    expect(String(login[1].body)).toContain('csrf_token=login-token');
+    expect(String(login[1].body)).toContain('username=reader');
+    expect(new Headers(login[1].headers).get('Cookie')).toBe('session=anonymous');
+    const upload = fetcher.mock.calls[3]!;
+    expect(upload[0]).toBe('https://books.test/mount/upload');
+    expect(new Headers(upload[1].headers).get('Cookie')).toBe('session=signed-in');
+    expect(new Headers(upload[1].headers).get('X-CSRFToken')).toBe('upload-token');
+    expect(((upload[1].body as FormData).get('btn-upload') as File).name).toBe('A Book.epub');
+    // The session is reused; Calibre-Web Automated queues ingestion and returns no book id.
+    expect((await client.addBook(file)).bookId).toBeUndefined();
+    expect(fetcher).toHaveBeenCalledTimes(6);
+  });
+
   it('leaves series, publisher and date unset when Calibre sends null or its placeholder date', async () => {
     const undated = {
       ...metadata,

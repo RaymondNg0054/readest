@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { parseCalibreWebFeed, reconcileCalibreBooks } from '@/services/calibre/metadata';
+import {
+  calibreUploadCandidates,
+  parseCalibreWebFeed,
+  reconcileCalibreBooks,
+} from '@/services/calibre/metadata';
+import type { Book } from '@/types/book';
 import type { CalibreBookRecord, CalibreServer } from '@/types/calibre';
 import { getBookWithUpdatedMetadata } from '@/utils/book';
 
@@ -59,6 +64,14 @@ describe('Calibre library reconciliation', () => {
       language: 'en',
     });
     expect(edited.metadata?.calibreSource).toEqual(initial.metadata?.calibreSource);
+    const sent = {
+      ...initial,
+      metadata: { title: 'A Book', author: '', language: '', calibreSentTo: 'web' },
+    };
+    expect(
+      getBookWithUpdatedMetadata(sent, { title: 'Edited', author: '', language: '' }).metadata
+        ?.calibreSentTo,
+    ).toBe('web');
   });
   it('creates searchable, tag-groupable fileless stubs with publication metadata', () => {
     const result = reconcileCalibreBooks([], server, [record], 100);
@@ -130,6 +143,114 @@ describe('Calibre library reconciliation', () => {
     expect(reconcileCalibreBooks(initial, { ...server, libraryId: 'other' }, [], 200).books).toBe(
       initial,
     );
+  });
+});
+
+describe('Calibre duplicates', () => {
+  const local: Book = {
+    hash: 'local',
+    format: 'EPUB',
+    title: 'A Book',
+    author: 'An Author',
+    createdAt: 1,
+    updatedAt: 1,
+    downloadedAt: 1,
+    progress: [3, 10],
+    metadata: { title: 'A Book', author: 'An Author', language: 'en', identifier: 'isbn' },
+  };
+
+  it('links a book already in Readest instead of adding a second row', () => {
+    const result = reconcileCalibreBooks([local], server, [record], 100);
+    expect(result.books).toHaveLength(1);
+    expect(result.added).toBe(0);
+    expect(result.books[0]).toMatchObject({
+      hash: 'local',
+      downloadedAt: 1,
+      progress: [3, 10],
+      tags: ['Fiction'],
+      metadata: { identifier: 'isbn', calibreSource: { serverId: 'server', bookId: '12' } },
+    });
+  });
+
+  it('matches titles and authors like Calibre: case, punctuation, articles and name order', () => {
+    const variant = {
+      ...local,
+      title: 'The book!',
+      author: 'Author, An',
+      metadata: { title: 'The book!', author: { name: { en: 'Author, An' } }, language: 'en' },
+    };
+    expect(reconcileCalibreBooks([variant], server, [record], 100).books).toHaveLength(1);
+    const other = { ...local, title: 'Another Book', metadata: undefined };
+    expect(reconcileCalibreBooks([other], server, [record], 100).books).toHaveLength(2);
+  });
+
+  it('replaces an undownloaded stub once the same book is imported locally', () => {
+    const stub = reconcileCalibreBooks([], server, [record], 100).books[0]!;
+    const result = reconcileCalibreBooks([stub, local], server, [record], 200);
+    // Library saves never drop rows, so the stub must be tombstoned.
+    expect(result.books.find((book) => book.hash === stub.hash)?.deletedAt).toBe(200);
+    expect(
+      result.books.find((book) => book.hash === 'local')?.metadata?.calibreSource?.bookId,
+    ).toBe('12');
+    const next = reconcileCalibreBooks(result.books, server, [{ ...record, title: 'New' }], 300);
+    expect(next.books.find((book) => book.hash === 'local')?.title).toBe('New');
+    expect(next.books.filter((book) => !book.deletedAt)).toHaveLength(1);
+  });
+
+  it('keeps one row when another device syncs in its linked copy of a stub', () => {
+    const stub = reconcileCalibreBooks([], server, [record], 100).books[0]!;
+    const peer = { ...local, downloadedAt: undefined, uploadedAt: 50 };
+    const linked = reconcileCalibreBooks([peer], server, [record], 100).books[0]!;
+    const result = reconcileCalibreBooks([stub, linked], server, [record], 200);
+    expect(result.books.filter((book) => !book.deletedAt).map((book) => book.hash)).toEqual([
+      'local',
+    ]);
+  });
+
+  it('links a local copy of a server book whose row the user deleted', () => {
+    const stub = { ...reconcileCalibreBooks([], server, [record], 100).books[0]!, deletedAt: 150 };
+    const result = reconcileCalibreBooks([stub, local], server, [record], 200);
+    expect(
+      result.books.find((book) => book.hash === 'local')?.metadata?.calibreSource?.bookId,
+    ).toBe('12');
+    expect(result.added).toBe(0);
+  });
+
+  it('does not link deleted books, audiobooks or books of another Calibre server', () => {
+    const deleted = { ...local, deletedAt: 5 };
+    const audio = { ...local, hash: 'audio', format: 'OPDSAUDIO' as const };
+    const elsewhere = {
+      ...local,
+      hash: 'elsewhere',
+      metadata: {
+        ...local.metadata!,
+        calibreSource: { serverId: 'other', libraryId: 'l', bookId: '3', formats: [] },
+      },
+    };
+    const result = reconcileCalibreBooks([deleted, audio, elsewhere], server, [record], 100);
+    expect(result.books).toHaveLength(4);
+    expect(result.added).toBe(1);
+  });
+
+  it('links a book sent to Calibre-Web once the server lists it', () => {
+    const sent = { ...local, metadata: { ...local.metadata!, calibreSentTo: 'server' } };
+    const [linked] = reconcileCalibreBooks([sent], server, [record], 100).books;
+    expect(linked?.metadata?.calibreSource?.bookId).toBe('12');
+    expect(linked?.metadata?.calibreSentTo).toBeUndefined();
+  });
+
+  it('sends only local ebook files the server does not have', () => {
+    const fresh = { ...local, hash: 'fresh', title: 'Fresh', metadata: undefined };
+    const books: Book[] = [
+      local,
+      fresh,
+      { ...fresh, hash: 'deleted', deletedAt: 1 },
+      { ...fresh, hash: 'cloud-only', downloadedAt: undefined, uploadedAt: 1 },
+      { ...fresh, hash: 'audio', format: 'OPDSAUDIO' },
+      { ...fresh, hash: 'sent', metadata: { ...local.metadata!, calibreSentTo: 'server' } },
+      ...reconcileCalibreBooks([], server, [{ ...record, id: '99', title: 'Stub' }], 1).books,
+    ];
+    expect(calibreUploadCandidates(books, [record]).map((book) => book.hash)).toEqual(['fresh']);
   });
 });
 

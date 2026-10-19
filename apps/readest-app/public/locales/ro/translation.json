@@ -2708,5 +2708,12 @@
   "Calibre returned an empty book file.": "Calibre a returnat un fișier de carte gol.",
   "Calibre sync failed.": "Sincronizarea Calibre a eșuat.",
   "Library is not ready. Please sync again.": "Biblioteca nu este pregătită. Sincronizează din nou.",
-  "Invalid Calibre-Web OPDS feed. Check OPDS access and authentication.": "Feed OPDS Calibre-Web nevalid. Verifică accesul OPDS și autentificarea."
+  "Invalid Calibre-Web OPDS feed. Check OPDS access and authentication.": "Feed OPDS Calibre-Web nevalid. Verifică accesul OPDS și autentificarea.",
+  "Send Local Books to Calibre": "Trimite cărțile locale către Calibre",
+  "Books already on the server are linked instead of sent again.": "Cărțile care există deja pe server sunt asociate în loc să fie trimise din nou.",
+  "Sending books to Calibre: {{sent}}/{{total}}": "Se trimit cărțile către Calibre: {{sent}}/{{total}}",
+  "Sent to Calibre: {{sent}}": "Trimise către Calibre: {{sent}}",
+  "Sending books to Calibre-Web requires the desktop or mobile app.": "Trimiterea cărților către Calibre-Web necesită aplicația desktop sau mobilă.",
+  "Calibre-Web login failed. Check your credentials.": "Autentificarea în Calibre-Web a eșuat. Verifică datele de autentificare.",
+  "Calibre-Web uploads are off or this account cannot upload.": "Încărcările în Calibre-Web sunt dezactivate sau acest cont nu poate încărca."
 }

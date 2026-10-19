@@ -2642,5 +2642,12 @@
   "Calibre returned an empty book file.": "Calibre காலியான புத்தகக் கோப்பைத் திருப்பியது.",
   "Calibre sync failed.": "Calibre ஒத்திசைவு தோல்வியடைந்தது.",
   "Library is not ready. Please sync again.": "நூலகம் தயாராக இல்லை. மீண்டும் ஒத்திசைக்கவும்.",
-  "Invalid Calibre-Web OPDS feed. Check OPDS access and authentication.": "தவறான Calibre-Web OPDS ஊட்டம். OPDS அணுகலையும் அங்கீகாரத்தையும் சரிபார்க்கவும்."
+  "Invalid Calibre-Web OPDS feed. Check OPDS access and authentication.": "தவறான Calibre-Web OPDS ஊட்டம். OPDS அணுகலையும் அங்கீகாரத்தையும் சரிபார்க்கவும்.",
+  "Send Local Books to Calibre": "உள்ளூர் புத்தகங்களை Calibre-க்கு அனுப்பவும்",
+  "Books already on the server are linked instead of sent again.": "சர்வரில் ஏற்கனவே உள்ள புத்தகங்கள் மீண்டும் அனுப்பப்படாமல் இணைக்கப்படும்.",
+  "Sending books to Calibre: {{sent}}/{{total}}": "Calibre-க்கு புத்தகங்கள் அனுப்பப்படுகின்றன: {{sent}}/{{total}}",
+  "Sent to Calibre: {{sent}}": "Calibre-க்கு அனுப்பப்பட்டவை: {{sent}}",
+  "Sending books to Calibre-Web requires the desktop or mobile app.": "Calibre-Web-க்கு புத்தகங்களை அனுப்ப டெஸ்க்டாப் அல்லது மொபைல் செயலி தேவை.",
+  "Calibre-Web login failed. Check your credentials.": "Calibre-Web உள்நுழைவு தோல்வியடைந்தது. உங்கள் அங்கீகாரத் தரவுகளைச் சரிபார்க்கவும்.",
+  "Calibre-Web uploads are off or this account cannot upload.": "Calibre-Web பதிவேற்றங்கள் முடக்கப்பட்டுள்ளன அல்லது இந்தக் கணக்கால் பதிவேற்ற முடியாது."
 }

@@ -2576,5 +2576,12 @@
   "Calibre returned an empty book file.": "Calibre ส่งไฟล์หนังสือว่างเปล่ากลับมา",
   "Calibre sync failed.": "ซิงค์ Calibre ไม่สำเร็จ",
   "Library is not ready. Please sync again.": "คลังหนังสือยังไม่พร้อม โปรดซิงค์อีกครั้ง",
-  "Invalid Calibre-Web OPDS feed. Check OPDS access and authentication.": "ฟีด OPDS ของ Calibre-Web ไม่ถูกต้อง กรุณาตรวจสอบการเข้าถึง OPDS และการยืนยันตัวตน"
+  "Invalid Calibre-Web OPDS feed. Check OPDS access and authentication.": "ฟีด OPDS ของ Calibre-Web ไม่ถูกต้อง กรุณาตรวจสอบการเข้าถึง OPDS และการยืนยันตัวตน",
+  "Send Local Books to Calibre": "ส่งหนังสือในเครื่องไปยัง Calibre",
+  "Books already on the server are linked instead of sent again.": "หนังสือที่มีอยู่บนเซิร์ฟเวอร์แล้วจะถูกเชื่อมโยงแทนการส่งซ้ำ",
+  "Sending books to Calibre: {{sent}}/{{total}}": "กำลังส่งหนังสือไปยัง Calibre: {{sent}}/{{total}}",
+  "Sent to Calibre: {{sent}}": "ส่งไปยัง Calibre แล้ว: {{sent}}",
+  "Sending books to Calibre-Web requires the desktop or mobile app.": "การส่งหนังสือไปยัง Calibre-Web ต้องใช้แอปเดสก์ท็อปหรือมือถือ",
+  "Calibre-Web login failed. Check your credentials.": "เข้าสู่ระบบ Calibre-Web ไม่สำเร็จ กรุณาตรวจสอบข้อมูลรับรองของคุณ",
+  "Calibre-Web uploads are off or this account cannot upload.": "การอัปโหลดไปยัง Calibre-Web ถูกปิดอยู่ หรือบัญชีนี้ไม่สามารถอัปโหลดได้"
 }

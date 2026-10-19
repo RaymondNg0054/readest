@@ -2576,5 +2576,12 @@
   "Calibre returned an empty book file.": "Calibre 返回了空的书籍文件。",
   "Calibre sync failed.": "Calibre 同步失败。",
   "Library is not ready. Please sync again.": "书库尚未就绪。请重新同步。",
-  "Invalid Calibre-Web OPDS feed. Check OPDS access and authentication.": "无效的 Calibre-Web OPDS 源。请检查 OPDS 访问权限和认证设置。"
+  "Invalid Calibre-Web OPDS feed. Check OPDS access and authentication.": "无效的 Calibre-Web OPDS 源。请检查 OPDS 访问权限和认证设置。",
+  "Send Local Books to Calibre": "将本地书籍发送到 Calibre",
+  "Books already on the server are linked instead of sent again.": "服务器上已有的书籍将直接关联，不会重复发送。",
+  "Sending books to Calibre: {{sent}}/{{total}}": "正在发送书籍到 Calibre：{{sent}}/{{total}}",
+  "Sent to Calibre: {{sent}}": "已发送到 Calibre：{{sent}}",
+  "Sending books to Calibre-Web requires the desktop or mobile app.": "发送书籍到 Calibre-Web 需要使用桌面或移动应用。",
+  "Calibre-Web login failed. Check your credentials.": "Calibre-Web 登录失败。请检查你的凭据。",
+  "Calibre-Web uploads are off or this account cannot upload.": "Calibre-Web 上传功能已关闭，或此账户没有上传权限。"
 }

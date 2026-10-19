@@ -7,6 +7,9 @@ export interface CalibreSyncStatus {
   added?: number;
   updated?: number;
   removed?: number;
+  /** While running: fetched/total count books sent to the server. */
+  sending?: boolean;
+  sent?: number;
   finishedAt?: number;
   error?: string;
 }

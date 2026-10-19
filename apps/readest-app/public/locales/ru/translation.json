@@ -2774,5 +2774,12 @@
   "Calibre returned an empty book file.": "Calibre вернул пустой файл книги.",
   "Calibre sync failed.": "Синхронизация Calibre не удалась.",
   "Library is not ready. Please sync again.": "Библиотека не готова. Синхронизируйте ещё раз.",
-  "Invalid Calibre-Web OPDS feed. Check OPDS access and authentication.": "Недействительная лента OPDS Calibre-Web. Проверьте доступ к OPDS и аутентификацию."
+  "Invalid Calibre-Web OPDS feed. Check OPDS access and authentication.": "Недействительная лента OPDS Calibre-Web. Проверьте доступ к OPDS и аутентификацию.",
+  "Send Local Books to Calibre": "Отправлять локальные книги в Calibre",
+  "Books already on the server are linked instead of sent again.": "Книги, которые уже есть на сервере, связываются, а не отправляются повторно.",
+  "Sending books to Calibre: {{sent}}/{{total}}": "Отправка книг в Calibre: {{sent}}/{{total}}",
+  "Sent to Calibre: {{sent}}": "Отправлено в Calibre: {{sent}}",
+  "Sending books to Calibre-Web requires the desktop or mobile app.": "Для отправки книг в Calibre-Web нужно приложение для компьютера или телефона.",
+  "Calibre-Web login failed. Check your credentials.": "Не удалось войти в Calibre-Web. Проверьте учётные данные.",
+  "Calibre-Web uploads are off or this account cannot upload.": "Загрузка в Calibre-Web отключена, или у этого аккаунта нет права на загрузку."
 }

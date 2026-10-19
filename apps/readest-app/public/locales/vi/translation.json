@@ -2576,5 +2576,12 @@
   "Calibre returned an empty book file.": "Calibre trả về tệp sách trống.",
   "Calibre sync failed.": "Đồng bộ Calibre thất bại.",
   "Library is not ready. Please sync again.": "Thư viện chưa sẵn sàng. Vui lòng đồng bộ lại.",
-  "Invalid Calibre-Web OPDS feed. Check OPDS access and authentication.": "Nguồn cấp OPDS Calibre-Web không hợp lệ. Hãy kiểm tra quyền truy cập OPDS và xác thực."
+  "Invalid Calibre-Web OPDS feed. Check OPDS access and authentication.": "Nguồn cấp OPDS Calibre-Web không hợp lệ. Hãy kiểm tra quyền truy cập OPDS và xác thực.",
+  "Send Local Books to Calibre": "Gửi sách cục bộ đến Calibre",
+  "Books already on the server are linked instead of sent again.": "Sách đã có trên máy chủ sẽ được liên kết thay vì gửi lại.",
+  "Sending books to Calibre: {{sent}}/{{total}}": "Đang gửi sách đến Calibre: {{sent}}/{{total}}",
+  "Sent to Calibre: {{sent}}": "Đã gửi đến Calibre: {{sent}}",
+  "Sending books to Calibre-Web requires the desktop or mobile app.": "Gửi sách đến Calibre-Web cần ứng dụng máy tính hoặc di động.",
+  "Calibre-Web login failed. Check your credentials.": "Đăng nhập Calibre-Web thất bại. Hãy kiểm tra thông tin xác thực của bạn.",
+  "Calibre-Web uploads are off or this account cannot upload.": "Tải lên Calibre-Web đang tắt hoặc tài khoản này không có quyền tải lên."
 }

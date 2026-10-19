@@ -2576,5 +2576,12 @@
   "Calibre returned an empty book file.": "Calibre mengembalikan fail buku kosong.",
   "Calibre sync failed.": "Penyegerakan Calibre gagal.",
   "Library is not ready. Please sync again.": "Perpustakaan belum sedia. Sila segerakkan semula.",
-  "Invalid Calibre-Web OPDS feed. Check OPDS access and authentication.": "Suapan OPDS Calibre-Web tidak sah. Semak akses OPDS dan pengesahan."
+  "Invalid Calibre-Web OPDS feed. Check OPDS access and authentication.": "Suapan OPDS Calibre-Web tidak sah. Semak akses OPDS dan pengesahan.",
+  "Send Local Books to Calibre": "Hantar Buku Setempat ke Calibre",
+  "Books already on the server are linked instead of sent again.": "Buku yang sudah ada pada pelayan dipautkan dan bukannya dihantar semula.",
+  "Sending books to Calibre: {{sent}}/{{total}}": "Menghantar buku ke Calibre: {{sent}}/{{total}}",
+  "Sent to Calibre: {{sent}}": "Dihantar ke Calibre: {{sent}}",
+  "Sending books to Calibre-Web requires the desktop or mobile app.": "Menghantar buku ke Calibre-Web memerlukan aplikasi desktop atau mudah alih.",
+  "Calibre-Web login failed. Check your credentials.": "Log masuk Calibre-Web gagal. Semak kelayakan anda.",
+  "Calibre-Web uploads are off or this account cannot upload.": "Muat naik Calibre-Web dimatikan atau akaun ini tidak boleh memuat naik."
 }

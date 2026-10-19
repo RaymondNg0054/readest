@@ -2708,5 +2708,12 @@
   "Calibre returned an empty book file.": "Calibre החזיר קובץ ספר ריק.",
   "Calibre sync failed.": "סנכרון Calibre נכשל.",
   "Library is not ready. Please sync again.": "הספרייה אינה מוכנה. סנכרן שוב.",
-  "Invalid Calibre-Web OPDS feed. Check OPDS access and authentication.": "פיד OPDS לא תקין של Calibre-Web. בדוק את הגישה ל-OPDS ואת האימות."
+  "Invalid Calibre-Web OPDS feed. Check OPDS access and authentication.": "פיד OPDS לא תקין של Calibre-Web. בדוק את הגישה ל-OPDS ואת האימות.",
+  "Send Local Books to Calibre": "שליחת ספרים מקומיים אל Calibre",
+  "Books already on the server are linked instead of sent again.": "ספרים שכבר נמצאים בשרת מקושרים במקום להישלח שוב.",
+  "Sending books to Calibre: {{sent}}/{{total}}": "שולח ספרים אל Calibre: {{sent}}/{{total}}",
+  "Sent to Calibre: {{sent}}": "נשלחו אל Calibre: {{sent}}",
+  "Sending books to Calibre-Web requires the desktop or mobile app.": "שליחת ספרים אל Calibre-Web מחייבת את אפליקציית שולחן העבודה או הנייד.",
+  "Calibre-Web login failed. Check your credentials.": "ההתחברות ל-Calibre-Web נכשלה. בדוק את פרטי הכניסה שלך.",
+  "Calibre-Web uploads are off or this account cannot upload.": "ההעלאה ל-Calibre-Web כבויה או שחשבון זה אינו יכול להעלות."
 }

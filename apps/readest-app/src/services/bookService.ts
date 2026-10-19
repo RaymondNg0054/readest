@@ -25,6 +25,7 @@ import {
   getStableMetadataHash,
   parseSeriesPosition,
   getBookDocPageCount,
+  withCalibreLink,
 } from '@/utils/book';
 import type { BookNav } from '@/services/nav';
 import { partialMD5, md5 } from '@/utils/md5';
@@ -1248,9 +1249,7 @@ export async function refreshBookMetadata(fs: FileSystem, book: Book): Promise<b
     ({ book: bookDoc } = await new DocumentLoader(file).open());
     if (!bookDoc) return false;
 
-    book.metadata = book.metadata?.calibreSource
-      ? { ...bookDoc.metadata, calibreSource: book.metadata.calibreSource }
-      : bookDoc.metadata;
+    book.metadata = withCalibreLink(book, bookDoc.metadata);
     // PDF metaHash is salted with the original import filename (issue #5411),
     // which is lost after import — keep the value stamped at import time.
     if (book.format !== 'PDF' || !book.metaHash) {

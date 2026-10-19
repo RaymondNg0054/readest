@@ -2642,5 +2642,12 @@
   "Calibre returned an empty book file.": "Calibre-მა ცარიელი წიგნის ფაილი დააბრუნა.",
   "Calibre sync failed.": "Calibre-ის სინქრონიზაცია ვერ მოხერხდა.",
   "Library is not ready. Please sync again.": "ბიბლიოთეკა მზად არ არის. გთხოვთ, ხელახლა დაასინქრონოთ.",
-  "Invalid Calibre-Web OPDS feed. Check OPDS access and authentication.": "Calibre-Web-ის არასწორი OPDS არხი. შეამოწმეთ OPDS წვდომა და ავტორიზაცია."
+  "Invalid Calibre-Web OPDS feed. Check OPDS access and authentication.": "Calibre-Web-ის არასწორი OPDS არხი. შეამოწმეთ OPDS წვდომა და ავტორიზაცია.",
+  "Send Local Books to Calibre": "ლოკალური წიგნების გაგზავნა Calibre-ში",
+  "Books already on the server are linked instead of sent again.": "სერვერზე უკვე არსებული წიგნები დაკავშირდება და ხელახლა არ გაიგზავნება.",
+  "Sending books to Calibre: {{sent}}/{{total}}": "წიგნები იგზავნება Calibre-ში: {{sent}}/{{total}}",
+  "Sent to Calibre: {{sent}}": "გაიგზავნა Calibre-ში: {{sent}}",
+  "Sending books to Calibre-Web requires the desktop or mobile app.": "Calibre-Web-ში წიგნების გასაგზავნად საჭიროა დესკტოპის ან მობილურის აპი.",
+  "Calibre-Web login failed. Check your credentials.": "Calibre-Web-ში შესვლა ვერ მოხერხდა. შეამოწმეთ ავტორიზაციის მონაცემები.",
+  "Calibre-Web uploads are off or this account cannot upload.": "Calibre-Web-ში ატვირთვა გამორთულია ან ამ ანგარიშს ატვირთვის უფლება არ აქვს."
 }

@@ -8,6 +8,10 @@ export function useCalibreSync() {
   const { appService } = useEnv();
   const servers = useSettingsStore((s) => s.settings.calibreServers);
   const ready = useLibraryStore((s) => s.libraryLoaded);
+  // A new local book is sent to Calibre right away instead of on the next check.
+  const localBooks = useLibraryStore(
+    (s) => s.library.filter((book) => !book.deletedAt && !book.metadata?.calibreSource).length,
+  );
   useEffect(() => {
     if (!appService || !ready) return;
     const check = async () => {
@@ -19,5 +23,5 @@ export function useCalibreSync() {
     void check();
     const timer = setInterval(() => void check(), 5 * 60_000);
     return () => clearInterval(timer);
-  }, [appService, ready, servers]);
+  }, [appService, ready, servers, localBooks]);
 }

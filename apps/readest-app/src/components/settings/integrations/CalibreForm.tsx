@@ -73,6 +73,7 @@ export default function CalibreForm({ onBack }: { onBack: () => void }) {
           ...draft,
           enabled: previous?.enabled ?? true,
           syncProgress: previous?.syncProgress ?? false,
+          uploadBooks: previous?.uploadBooks,
         };
         await persist([...current.filter((s) => s.id !== server.id), server]);
         if (appService) void syncCalibreServer(appService, server, true);
@@ -114,11 +115,26 @@ export default function CalibreForm({ onBack }: { onBack: () => void }) {
                   onChange={() => void patch(server.id, { syncProgress: !server.syncProgress })}
                 />
               )}
+              <SettingsSwitchRow
+                label={_('Send Local Books to Calibre')}
+                checked={server.uploadBooks !== false}
+                disabled={!server.username || (server.kind === 'calibre-web' && isWebAppPlatform())}
+                onChange={() =>
+                  void patch(server.id, { uploadBooks: server.uploadBooks === false })
+                }
+              />
             </BoxedList>
             <div role='status' aria-live='polite' className='px-1 text-[0.85em]'>
               {status?.running ? (
                 <>
-                  <p>{_('Syncing Calibre: {{count}} books', { count: status.fetched })}</p>
+                  <p>
+                    {status.sending
+                      ? _('Sending books to Calibre: {{sent}}/{{total}}', {
+                          sent: status.fetched,
+                          total: status.total,
+                        })
+                      : _('Syncing Calibre: {{count}} books', { count: status.fetched })}
+                  </p>
                   <progress
                     className='progress w-full'
                     aria-label={_('Library Sync Progress')}
@@ -137,6 +153,12 @@ export default function CalibreForm({ onBack }: { onBack: () => void }) {
                     updated: status.updated ?? 0,
                     removed: status.removed ?? 0,
                   })}
+                  {!!status.sent && (
+                    <>
+                      <br />
+                      {_('Sent to Calibre: {{sent}}', { sent: status.sent })}
+                    </>
+                  )}
                 </p>
               ) : null}
             </div>
@@ -306,6 +328,7 @@ export default function CalibreForm({ onBack }: { onBack: () => void }) {
             'Metadata and tags are imported from Calibre. Local edits are not sent to the server.',
           )}
         </li>
+        <li>{_('Books already on the server are linked instead of sent again.')}</li>
         <li>
           {_(
             'Removed server books are marked unavailable; downloaded files and annotations are never deleted automatically.',
@@ -325,6 +348,9 @@ export default function CalibreForm({ onBack }: { onBack: () => void }) {
               'Browser connections require the server to allow this site in its CORS policy. HTTPS pages cannot connect to an HTTP server. Use the native app for local servers.',
             )}
           </li>
+        )}
+        {isWebAppPlatform() && (
+          <li>{_('Sending books to Calibre-Web requires the desktop or mobile app.')}</li>
         )}
       </Tips>
     </div>

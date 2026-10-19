@@ -2642,5 +2642,12 @@
   "Calibre returned an empty book file.": "A Calibre üres könyvfájlt adott vissza.",
   "Calibre sync failed.": "A Calibre szinkronizálás sikertelen.",
   "Library is not ready. Please sync again.": "A könyvtár nem áll készen. Kérjük, szinkronizáljon újra.",
-  "Invalid Calibre-Web OPDS feed. Check OPDS access and authentication.": "Érvénytelen Calibre-Web OPDS-hírcsatorna. Ellenőrizze az OPDS-hozzáférést és a hitelesítést."
+  "Invalid Calibre-Web OPDS feed. Check OPDS access and authentication.": "Érvénytelen Calibre-Web OPDS-hírcsatorna. Ellenőrizze az OPDS-hozzáférést és a hitelesítést.",
+  "Send Local Books to Calibre": "Helyi könyvek küldése a Calibre-be",
+  "Books already on the server are linked instead of sent again.": "A szerveren már meglévő könyveket újraküldés helyett összekapcsolja.",
+  "Sending books to Calibre: {{sent}}/{{total}}": "Könyvek küldése a Calibre-be: {{sent}}/{{total}}",
+  "Sent to Calibre: {{sent}}": "Elküldve a Calibre-be: {{sent}}",
+  "Sending books to Calibre-Web requires the desktop or mobile app.": "A könyvek Calibre-Web szerverre küldéséhez az asztali vagy mobilalkalmazás szükséges.",
+  "Calibre-Web login failed. Check your credentials.": "A Calibre-Web bejelentkezés sikertelen. Ellenőrizze a hitelesítő adatokat.",
+  "Calibre-Web uploads are off or this account cannot upload.": "A Calibre-Web feltöltések ki vannak kapcsolva, vagy ez a fiók nem tölthet fel."
 }
