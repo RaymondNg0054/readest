@@ -255,6 +255,17 @@ describe('Calibre duplicates', () => {
 });
 
 describe('Calibre-Web OPDS metadata', () => {
+  it('keeps the OPDS UUID alongside the numeric download id for reading-position sync', () => {
+    const uuid = 'c286817e-22f3-4cae-a495-755d371fd824';
+    const xml = `<feed xmlns="http://www.w3.org/2005/Atom"><entry>
+      <id>urn:uuid:${uuid}</id><title>A Book</title><author><name>Author</name></author>
+      <link rel="http://opds-spec.org/acquisition" href="/opds/download/12/epub/"/>
+    </entry></feed>`;
+    const records = parseCalibreWebFeed(xml).books;
+    expect(records[0]).toMatchObject({ id: '12', uuid });
+    const result = reconcileCalibreBooks([], { ...server, kind: 'calibre-web' }, records, 100);
+    expect(result.books[0]?.metadata?.calibreSource).toMatchObject({ bookId: '12', uuid });
+  });
   const feed = `<feed xmlns="http://www.w3.org/2005/Atom" xmlns:dcterms="http://purl.org/dc/terms/">
     <link rel="next" href="/calibre/opds/books/letter/00?offset=20"/>
     <entry><id>urn:uuid:not-the-book-id</id><title>A Book</title>

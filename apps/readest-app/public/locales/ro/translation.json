@@ -2692,7 +2692,6 @@
   "Connecting...": "Se conectează...",
   "Metadata and tags are imported from Calibre. Local edits are not sent to the server.": "Metadatele și etichetele sunt importate din Calibre. Modificările locale nu sunt trimise către server.",
   "Removed server books are marked unavailable; downloaded files and annotations are never deleted automatically.": "Cărțile eliminate de pe server sunt marcate ca indisponibile; fișierele descărcate și adnotările nu sunt niciodată șterse automat.",
-  "EPUB reading-position sync requires a signed-in Calibre Content Server account with write access. Calibre-Web does not provide this API.": "Sincronizarea poziției de lectură EPUB necesită un cont autentificat pe serverul de conținut Calibre, cu drept de scriere. Calibre-Web nu oferă acest API.",
   "Use HTTPS on untrusted networks. HTTP sends your credentials without encryption.": "Folosește HTTPS în rețelele nesigure. HTTP trimite datele de autentificare necriptate.",
   "Browser connections require the server to allow this site in its CORS policy. HTTPS pages cannot connect to an HTTP server. Use the native app for local servers.": "Conexiunile din browser necesită ca serverul să permită acest site în politica sa CORS. Paginile HTTPS nu se pot conecta la un server HTTP. Folosește aplicația nativă pentru servere locale.",
   "Calibre authentication failed. Check your credentials and permissions.": "Autentificarea în Calibre a eșuat. Verifică datele de autentificare și permisiunile.",
@@ -2715,5 +2714,8 @@
   "Sent to Calibre: {{sent}}": "Trimise către Calibre: {{sent}}",
   "Sending books to Calibre-Web requires the desktop or mobile app.": "Trimiterea cărților către Calibre-Web necesită aplicația desktop sau mobilă.",
   "Calibre-Web login failed. Check your credentials.": "Autentificarea în Calibre-Web a eșuat. Verifică datele de autentificare.",
-  "Calibre-Web uploads are off or this account cannot upload.": "Încărcările în Calibre-Web sunt dezactivate sau acest cont nu poate încărca."
+  "Calibre-Web uploads are off or this account cannot upload.": "Încărcările în Calibre-Web sunt dezactivate sau acest cont nu poate încărca.",
+  "Kobo Sync Token": "Token de sincronizare Kobo",
+  "EPUB reading-position sync requires a writable Calibre account or a Calibre-Web Kobo sync token.": "Sincronizarea poziției de lectură EPUB necesită un cont Calibre cu acces la scriere sau un token de sincronizare Kobo din Calibre-Web.",
+  "Enable Kobo sync in Calibre-Web, then copy the token from the Kobo sync URL in your profile.": "Activați sincronizarea Kobo în Calibre-Web, apoi copiați tokenul din adresa URL de sincronizare Kobo din profilul dvs."
 }

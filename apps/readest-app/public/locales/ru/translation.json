@@ -2758,7 +2758,6 @@
   "Connecting...": "Подключение...",
   "Metadata and tags are imported from Calibre. Local edits are not sent to the server.": "Метаданные и теги импортируются из Calibre. Локальные изменения не отправляются на сервер.",
   "Removed server books are marked unavailable; downloaded files and annotations are never deleted automatically.": "Книги, удалённые с сервера, помечаются как недоступные; скачанные файлы и аннотации никогда не удаляются автоматически.",
-  "EPUB reading-position sync requires a signed-in Calibre Content Server account with write access. Calibre-Web does not provide this API.": "Для синхронизации позиции чтения EPUB нужен вход в аккаунт сервера контента Calibre с правом записи. Calibre-Web не предоставляет этот API.",
   "Use HTTPS on untrusted networks. HTTP sends your credentials without encryption.": "В ненадёжных сетях используйте HTTPS. HTTP передаёт учётные данные без шифрования.",
   "Browser connections require the server to allow this site in its CORS policy. HTTPS pages cannot connect to an HTTP server. Use the native app for local servers.": "Для подключения из браузера сервер должен разрешать этот сайт в своей политике CORS. Страницы HTTPS не могут подключаться к серверу HTTP. Для локальных серверов используйте нативное приложение.",
   "Calibre authentication failed. Check your credentials and permissions.": "Ошибка аутентификации Calibre. Проверьте учётные данные и права доступа.",
@@ -2781,5 +2780,8 @@
   "Sent to Calibre: {{sent}}": "Отправлено в Calibre: {{sent}}",
   "Sending books to Calibre-Web requires the desktop or mobile app.": "Для отправки книг в Calibre-Web нужно приложение для компьютера или телефона.",
   "Calibre-Web login failed. Check your credentials.": "Не удалось войти в Calibre-Web. Проверьте учётные данные.",
-  "Calibre-Web uploads are off or this account cannot upload.": "Загрузка в Calibre-Web отключена, или у этого аккаунта нет права на загрузку."
+  "Calibre-Web uploads are off or this account cannot upload.": "Загрузка в Calibre-Web отключена, или у этого аккаунта нет права на загрузку.",
+  "Kobo Sync Token": "Токен синхронизации Kobo",
+  "EPUB reading-position sync requires a writable Calibre account or a Calibre-Web Kobo sync token.": "Для синхронизации позиции чтения EPUB нужна учётная запись Calibre с правом записи или токен синхронизации Kobo из Calibre-Web.",
+  "Enable Kobo sync in Calibre-Web, then copy the token from the Kobo sync URL in your profile.": "Включите синхронизацию Kobo в Calibre-Web, затем скопируйте токен из URL-адреса синхронизации Kobo в своём профиле."
 }

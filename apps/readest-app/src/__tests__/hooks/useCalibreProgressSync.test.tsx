@@ -54,7 +54,7 @@ const book: Book = {
     },
   },
 };
-const view = { goTo: vi.fn() };
+const view = { goTo: vi.fn(), goToFraction: vi.fn() };
 const seedProgress = (location = local, fraction = 0.1) =>
   useReaderProgressStore.setState({
     progresses: { [key]: { location, fraction } as BookProgress },
@@ -86,6 +86,7 @@ beforeEach(() => {
   client.getPosition.mockResolvedValue(undefined);
   client.setPosition.mockResolvedValue(undefined);
   view.goTo.mockResolvedValue(undefined);
+  view.goToFraction.mockResolvedValue(undefined);
 });
 afterEach(() => {
   cleanup();
@@ -132,7 +133,27 @@ describe('Calibre reader sync', () => {
     expect(view.goTo).not.toHaveBeenCalled();
     expect(client.setPosition).toHaveBeenCalledWith('1', 'EPUB', next, 0.3);
   });
-  it('never overwrites unread remote progress after a failed pull', async () => {
+  it.each([
+    'calibre',
+    'calibre-web',
+  ] as const)('never overwrites unread %s progress after a failed pull', async (kind) => {
+    if (kind === 'calibre-web') {
+      useSettingsStore.setState({
+        settings: {
+          calibreServers: [{ ...server, kind, koboToken: '0123456789abcdef0123456789abcdef' }],
+        } as SystemSettings,
+      });
+      useBookDataStore.getState().getBookData(key)!.book = {
+        ...book,
+        metadata: {
+          ...book.metadata!,
+          calibreSource: {
+            ...book.metadata!.calibreSource!,
+            uuid: 'c286817e-22f3-4cae-a495-755d371fd824',
+          },
+        },
+      };
+    }
     client.getPosition.mockRejectedValue(new Error('offline'));
     renderHook(() => useCalibreProgressSync(key));
     await settle();
@@ -145,7 +166,7 @@ describe('Calibre reader sync', () => {
     });
     expect(client.setPosition).not.toHaveBeenCalled();
   });
-  it('ignores late pulls after unmount and skips Calibre-Web', async () => {
+  it('ignores late pulls after unmount and skips Calibre-Web without a token', async () => {
     let complete: (position: CalibrePosition) => void = () => {};
     client.getPosition.mockReturnValue(
       new Promise((resolve) => {
@@ -166,6 +187,49 @@ describe('Calibre reader sync', () => {
     renderHook(() => useCalibreProgressSync(key));
     await settle();
     expect(client.getPosition).not.toHaveBeenCalled();
+  });
+  it.each([
+    true,
+    false,
+  ])('syncs Calibre-Web by UUID with exact CFI=%s and flushes page turns', async (exact) => {
+    const uuid = 'c286817e-22f3-4cae-a495-755d371fd824';
+    useSettingsStore.setState({
+      settings: {
+        calibreServers: [
+          {
+            ...server,
+            kind: 'calibre-web',
+            username: '',
+            koboToken: '0123456789abcdef0123456789abcdef',
+          },
+        ],
+      } as SystemSettings,
+    });
+    useBookDataStore.getState().getBookData(key)!.book = {
+      ...book,
+      metadata: { ...book.metadata!, calibreSource: { ...book.metadata!.calibreSource!, uuid } },
+    };
+    client.getPosition.mockResolvedValue({ cfi: exact ? remote : '', pos_frac: 0.5, timestamp: 5 });
+    const apply = async () => {
+      seedProgress(remote, 0.5);
+    };
+    if (exact) view.goTo.mockImplementation(apply);
+    else view.goToFraction.mockImplementation(apply);
+    renderHook(() => useCalibreProgressSync(key));
+    await settle();
+    expect(client.getPosition).toHaveBeenCalledWith(uuid, 'EPUB');
+    if (exact) expect(view.goTo).toHaveBeenCalledWith(remote);
+    else expect(view.goToFraction).toHaveBeenCalledWith(0.5);
+    await act(async () => {
+      vi.advanceTimersByTime(20_000);
+    });
+    expect(client.setPosition).not.toHaveBeenCalled();
+    act(() => {
+      seedProgress(next, 0.3);
+      eventDispatcher.dispatch('sync-book-progress', { bookKey: key });
+    });
+    await settle();
+    expect(client.setPosition).toHaveBeenCalledWith(uuid, 'EPUB', next, 0.3);
   });
   it('publishes locally saved progress from a previous offline session after a successful pull', async () => {
     localStorage.setItem('calibre-position-hash', '9000');

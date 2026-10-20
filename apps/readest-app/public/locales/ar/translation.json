@@ -2890,7 +2890,6 @@
   "Connecting...": "جاري الاتصال...",
   "Metadata and tags are imported from Calibre. Local edits are not sent to the server.": "يتم استيراد البيانات الوصفية والعلامات من Calibre. لا تُرسل التعديلات المحلية إلى الخادم.",
   "Removed server books are marked unavailable; downloaded files and annotations are never deleted automatically.": "تُميَّز الكتب المحذوفة من الخادم بأنها غير متاحة؛ ولا تُحذف الملفات التي تم تنزيلها والتعليقات التوضيحية تلقائيًا أبدًا.",
-  "EPUB reading-position sync requires a signed-in Calibre Content Server account with write access. Calibre-Web does not provide this API.": "تتطلب مزامنة موضع القراءة في EPUB حسابًا مسجّل الدخول على خادم محتوى Calibre مع صلاحية الكتابة. لا يوفر Calibre-Web واجهة API هذه.",
   "Use HTTPS on untrusted networks. HTTP sends your credentials without encryption.": "استخدم HTTPS على الشبكات غير الموثوقة. يرسل HTTP بيانات الاعتماد الخاصة بك دون تشفير.",
   "Browser connections require the server to allow this site in its CORS policy. HTTPS pages cannot connect to an HTTP server. Use the native app for local servers.": "تتطلب الاتصالات من المتصفح أن يسمح الخادم بهذا الموقع في سياسة CORS الخاصة به. لا يمكن لصفحات HTTPS الاتصال بخادم HTTP. استخدم التطبيق الأصلي للخوادم المحلية.",
   "Calibre authentication failed. Check your credentials and permissions.": "فشلت المصادقة مع Calibre. تحقق من بيانات الاعتماد والصلاحيات.",
@@ -2913,5 +2912,8 @@
   "Sent to Calibre: {{sent}}": "أُرسل إلى Calibre: {{sent}}",
   "Sending books to Calibre-Web requires the desktop or mobile app.": "يتطلب إرسال الكتب إلى Calibre-Web تطبيق سطح المكتب أو الهاتف.",
   "Calibre-Web login failed. Check your credentials.": "فشل تسجيل الدخول إلى Calibre-Web. تحقق من بيانات الاعتماد.",
-  "Calibre-Web uploads are off or this account cannot upload.": "الرفع إلى Calibre-Web متوقف أو لا يملك هذا الحساب صلاحية الرفع."
+  "Calibre-Web uploads are off or this account cannot upload.": "الرفع إلى Calibre-Web متوقف أو لا يملك هذا الحساب صلاحية الرفع.",
+  "Kobo Sync Token": "رمز مزامنة Kobo",
+  "EPUB reading-position sync requires a writable Calibre account or a Calibre-Web Kobo sync token.": "تتطلب مزامنة موضع القراءة في EPUB حساب Calibre بصلاحية الكتابة أو رمز مزامنة Kobo من Calibre-Web.",
+  "Enable Kobo sync in Calibre-Web, then copy the token from the Kobo sync URL in your profile.": "فعّل مزامنة Kobo في Calibre-Web، ثم انسخ الرمز من رابط مزامنة Kobo في ملفك الشخصي."
 }

@@ -2560,7 +2560,6 @@
   "Connecting...": "正在連線...",
   "Metadata and tags are imported from Calibre. Local edits are not sent to the server.": "中繼資料和標籤會從 Calibre 匯入。本機編輯不會傳送到伺服器。",
   "Removed server books are marked unavailable; downloaded files and annotations are never deleted automatically.": "已從伺服器移除的書籍會標示為無法使用；已下載的檔案和註解永遠不會被自動刪除。",
-  "EPUB reading-position sync requires a signed-in Calibre Content Server account with write access. Calibre-Web does not provide this API.": "EPUB 閱讀位置同步需要已登入且具有寫入權限的 Calibre 內容伺服器帳戶。Calibre-Web 不提供此 API。",
   "Use HTTPS on untrusted networks. HTTP sends your credentials without encryption.": "在不受信任的網路上請使用 HTTPS。HTTP 會以未加密的方式傳送您的憑證。",
   "Browser connections require the server to allow this site in its CORS policy. HTTPS pages cannot connect to an HTTP server. Use the native app for local servers.": "從瀏覽器連線時，伺服器的 CORS 政策必須允許本網站。HTTPS 頁面無法連線至 HTTP 伺服器。若要連線本機伺服器，請使用原生應用程式。",
   "Calibre authentication failed. Check your credentials and permissions.": "Calibre 驗證失敗。請檢查您的憑證和權限。",
@@ -2583,5 +2582,8 @@
   "Sent to Calibre: {{sent}}": "已傳送到 Calibre：{{sent}}",
   "Sending books to Calibre-Web requires the desktop or mobile app.": "傳送書籍到 Calibre-Web 需要使用桌面或行動應用程式。",
   "Calibre-Web login failed. Check your credentials.": "Calibre-Web 登入失敗。請檢查您的憑證。",
-  "Calibre-Web uploads are off or this account cannot upload.": "Calibre-Web 上傳功能已關閉，或此帳戶沒有上傳權限。"
+  "Calibre-Web uploads are off or this account cannot upload.": "Calibre-Web 上傳功能已關閉，或此帳戶沒有上傳權限。",
+  "Kobo Sync Token": "Kobo 同步權杖",
+  "EPUB reading-position sync requires a writable Calibre account or a Calibre-Web Kobo sync token.": "EPUB 閱讀位置同步需要具有寫入權限的 Calibre 帳號或 Calibre-Web 的 Kobo 同步權杖。",
+  "Enable Kobo sync in Calibre-Web, then copy the token from the Kobo sync URL in your profile.": "在 Calibre-Web 中啟用 Kobo 同步，然後從個人檔案中的 Kobo 同步 URL 複製權杖。"
 }

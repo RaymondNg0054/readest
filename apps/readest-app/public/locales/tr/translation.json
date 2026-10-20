@@ -2633,7 +2633,6 @@
   "Connecting...": "Bağlanıyor...",
   "Metadata and tags are imported from Calibre. Local edits are not sent to the server.": "Meta veriler ve etiketler Calibre'den içe aktarılır. Yerel düzenlemeler sunucuya gönderilmez.",
   "Removed server books are marked unavailable; downloaded files and annotations are never deleted automatically.": "Sunucudan kaldırılan kitaplar kullanılamıyor olarak işaretlenir; indirilen dosyalar ve açıklamalar hiçbir zaman otomatik olarak silinmez.",
-  "EPUB reading-position sync requires a signed-in Calibre Content Server account with write access. Calibre-Web does not provide this API.": "EPUB okuma konumu eşitlemesi, oturum açılmış ve yazma erişimine sahip bir Calibre İçerik Sunucusu hesabı gerektirir. Calibre-Web bu API'yi sağlamaz.",
   "Use HTTPS on untrusted networks. HTTP sends your credentials without encryption.": "Güvenilmeyen ağlarda HTTPS kullanın. HTTP kimlik bilgilerinizi şifrelemeden gönderir.",
   "Browser connections require the server to allow this site in its CORS policy. HTTPS pages cannot connect to an HTTP server. Use the native app for local servers.": "Tarayıcı bağlantıları için sunucunun CORS politikasında bu siteye izin vermesi gerekir. HTTPS sayfaları bir HTTP sunucusuna bağlanamaz. Yerel sunucular için yerel uygulamayı kullanın.",
   "Calibre authentication failed. Check your credentials and permissions.": "Calibre kimlik doğrulaması başarısız oldu. Kimlik bilgilerinizi ve izinlerinizi kontrol edin.",
@@ -2656,5 +2655,8 @@
   "Sent to Calibre: {{sent}}": "Calibre'ye gönderilen: {{sent}}",
   "Sending books to Calibre-Web requires the desktop or mobile app.": "Kitapları Calibre-Web'e göndermek masaüstü veya mobil uygulamayı gerektirir.",
   "Calibre-Web login failed. Check your credentials.": "Calibre-Web girişi başarısız oldu. Kimlik bilgilerinizi kontrol edin.",
-  "Calibre-Web uploads are off or this account cannot upload.": "Calibre-Web yüklemeleri kapalı veya bu hesap yükleme yapamıyor."
+  "Calibre-Web uploads are off or this account cannot upload.": "Calibre-Web yüklemeleri kapalı veya bu hesap yükleme yapamıyor.",
+  "Kobo Sync Token": "Kobo Eşitleme Belirteci",
+  "EPUB reading-position sync requires a writable Calibre account or a Calibre-Web Kobo sync token.": "EPUB okuma konumu eşitlemesi, yazma izni olan bir Calibre hesabı veya Calibre-Web Kobo eşitleme belirteci gerektirir.",
+  "Enable Kobo sync in Calibre-Web, then copy the token from the Kobo sync URL in your profile.": "Calibre-Web’de Kobo eşitlemesini etkinleştirin, ardından profilinizdeki Kobo eşitleme URL’sinden belirteci kopyalayın."
 }

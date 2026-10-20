@@ -20,6 +20,7 @@ export default function CalibreForm({ onBack }: { onBack: () => void }) {
   const [kind, setKind] = useState<CalibreServer['kind']>('calibre');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [koboToken, setKoboToken] = useState('');
   const [libraries, setLibraries] = useState<{ id: string; name: string }[]>([]);
   const [libraryId, setLibraryId] = useState('');
   const [busy, setBusy] = useState(false);
@@ -56,6 +57,7 @@ export default function CalibreForm({ onBack }: { onBack: () => void }) {
         kind,
         username,
         password,
+        ...(kind === 'calibre-web' ? { koboToken: koboToken.trim() } : {}),
         libraryId,
         enabled: true,
         syncProgress: false,
@@ -78,6 +80,7 @@ export default function CalibreForm({ onBack }: { onBack: () => void }) {
         await persist([...current.filter((s) => s.id !== server.id), server]);
         if (appService) void syncCalibreServer(appService, server, true);
         setPassword('');
+        setKoboToken('');
         setLibraries([]);
         setUrl('');
         setUsername('');
@@ -107,14 +110,12 @@ export default function CalibreForm({ onBack }: { onBack: () => void }) {
                 checked={server.enabled}
                 onChange={() => void patch(server.id, { enabled: !server.enabled })}
               />
-              {server.kind === 'calibre' && (
-                <SettingsSwitchRow
-                  label={_('Sync Reading Position')}
-                  checked={server.syncProgress}
-                  disabled={!server.username}
-                  onChange={() => void patch(server.id, { syncProgress: !server.syncProgress })}
-                />
-              )}
+              <SettingsSwitchRow
+                label={_('Sync Reading Position')}
+                checked={server.syncProgress}
+                disabled={server.kind === 'calibre' ? !server.username : !server.koboToken}
+                onChange={() => void patch(server.id, { syncProgress: !server.syncProgress })}
+              />
               <SettingsSwitchRow
                 label={_('Send Local Books to Calibre')}
                 checked={server.uploadBooks !== false}
@@ -172,6 +173,7 @@ export default function CalibreForm({ onBack }: { onBack: () => void }) {
                   setKind(server.kind);
                   setUsername(server.username ?? '');
                   setPassword(server.password ?? '');
+                  setKoboToken(server.koboToken ?? '');
                   setLibraries([]);
                   setLibraryId(server.libraryId);
                 }}
@@ -291,6 +293,24 @@ export default function CalibreForm({ onBack }: { onBack: () => void }) {
             }}
           />
         </div>
+        {kind === 'calibre-web' && (
+          <div className='space-y-1.5'>
+            <SectionTitle as='label' htmlFor='calibre-kobo-token'>
+              {_('Kobo Sync Token')}
+            </SectionTitle>
+            <input
+              id='calibre-kobo-token'
+              type='password'
+              autoComplete='off'
+              spellCheck={false}
+              pattern='[0-9a-fA-F]{32}'
+              disabled={busy}
+              value={koboToken}
+              className='input eink-bordered settings-content w-full'
+              onChange={(event) => setKoboToken(event.target.value.trim())}
+            />
+          </div>
+        )}
         {libraries.length > 0 && (
           <div className='space-y-1.5'>
             <SectionTitle as='label' htmlFor='calibre-library'>
@@ -336,9 +356,16 @@ export default function CalibreForm({ onBack }: { onBack: () => void }) {
         </li>
         <li>
           {_(
-            'EPUB reading-position sync requires a signed-in Calibre Content Server account with write access. Calibre-Web does not provide this API.',
+            'EPUB reading-position sync requires a writable Calibre account or a Calibre-Web Kobo sync token.',
           )}
         </li>
+        {kind === 'calibre-web' && (
+          <li>
+            {_(
+              'Enable Kobo sync in Calibre-Web, then copy the token from the Kobo sync URL in your profile.',
+            )}
+          </li>
+        )}
         <li>
           {_('Use HTTPS on untrusted networks. HTTP sends your credentials without encryption.')}
         </li>

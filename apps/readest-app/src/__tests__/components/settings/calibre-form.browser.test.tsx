@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { cleanup, render } from '@testing-library/react';
+import { cleanup, fireEvent, render } from '@testing-library/react';
 import { page } from 'vitest/browser';
 import type { SystemSettings } from '@/types/settings';
 
@@ -36,10 +36,11 @@ describe('Calibre settings layout', () => {
                 calibreServers: [
                   {
                     id: 'server',
-                    name: 'My Calibre library',
+                    name: 'My Calibre-Web library',
                     url: 'https://books.example.test/calibre',
-                    kind: 'calibre',
-                    libraryId: 'Library',
+                    kind: 'calibre-web',
+                    libraryId: 'calibre-web',
+                    koboToken: '0123456789abcdef0123456789abcdef',
                     enabled: true,
                     syncProgress: false,
                     username: 'reader',
@@ -50,7 +51,7 @@ describe('Calibre settings layout', () => {
             useCalibreSyncStore.setState({
               byServer: { server: { running: true, fetched: 50, total: 100 } },
             });
-            const { container, getByRole } = render(
+            const { container, getByRole, getByLabelText } = render(
               <div
                 className='settings-content bg-base-200 p-4'
                 style={{ width: 'min(100vw, 600px)' }}
@@ -58,6 +59,8 @@ describe('Calibre settings layout', () => {
                 <CalibreForm onBack={() => {}} />
               </div>,
             );
+            fireEvent.change(getByLabelText('Server Type'), { target: { value: 'calibre-web' } });
+            expect((getByLabelText('Kobo Sync Token') as HTMLInputElement).type).toBe('password');
             for (const control of container.querySelectorAll('input, select, button, progress')) {
               const bounds = control.getBoundingClientRect();
               expect(bounds.left).toBeGreaterThanOrEqual(0);

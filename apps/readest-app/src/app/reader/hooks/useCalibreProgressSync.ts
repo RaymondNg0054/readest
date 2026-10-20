@@ -31,11 +31,11 @@ export function useCalibreProgressSync(bookKey: string) {
       book.format !== 'EPUB' ||
       !source ||
       !server?.syncProgress ||
-      !server.username ||
-      server.kind !== 'calibre'
+      (server.kind === 'calibre' ? !server.username : !server.koboToken || !source.uuid)
     )
       return;
     const client = new CalibreClient({ ...server, libraryId: source.libraryId });
+    const positionId = server.kind === 'calibre-web' ? source.uuid! : source.bookId;
     const stampKey = `calibre-position-${book.hash}`;
     const openingLocation = getBookProgress(bookKey)?.location;
     let disposed = false;
@@ -64,7 +64,7 @@ export function useCalibreProgressSync(bookKey: string) {
       dirty = false;
       try {
         await client.setPosition(
-          source.bookId,
+          positionId,
           'EPUB',
           local.location,
           Math.max(0, Math.min(1, local.fraction)),
@@ -98,7 +98,7 @@ export function useCalibreProgressSync(bookKey: string) {
 
     const pull = async () => {
       try {
-        const remote = await client.getPosition(source.bookId, 'EPUB');
+        const remote = await client.getPosition(positionId, 'EPUB');
         if (disposed) return;
         const localStamp = Number(localStorage.getItem(stampKey) ?? 0);
         if (localStamp > (remote?.timestamp ?? 0) * 1000) dirty = true;
@@ -106,10 +106,22 @@ export function useCalibreProgressSync(bookKey: string) {
         if (!dirty && remote && remote.timestamp * 1000 > localStamp) {
           const view = useReaderStore.getState().getView(bookKey);
           if (!view || previewing()) return;
-          if (!remote.cfi?.startsWith('epubcfi(') || isMalformedLocationCfi(remote.cfi))
+          if (
+            remote.cfi &&
+            (!remote.cfi.startsWith('epubcfi(') || isMalformedLocationCfi(remote.cfi))
+          )
             throw new Error('Invalid remote position');
+          if (
+            !remote.cfi &&
+            (server.kind !== 'calibre-web' ||
+              !Number.isFinite(remote.pos_frac) ||
+              remote.pos_frac < 0 ||
+              remote.pos_frac > 1)
+          )
+            throw new Error('Invalid remote percentage');
           applying = true;
-          await view.goTo(remote.cfi);
+          if (remote.cfi) await view.goTo(remote.cfi);
+          else await view.goToFraction(remote.pos_frac);
           if (disposed) return;
           localStorage.setItem(stampKey, String(remote.timestamp * 1000));
           hint(_('Reading Progress Synced'));

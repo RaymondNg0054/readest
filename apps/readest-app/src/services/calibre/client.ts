@@ -127,7 +127,7 @@ export class CalibreClient {
         return await fetcher(url, {
           ...options,
           // Native HTTP uses maxRedirections rather than Request.redirect.
-          ...(manual && isTauriAppPlatform() ? { maxRedirections: 0 } : {}),
+          ...(isTauriAppPlatform() ? { maxRedirections: 0 } : {}),
           headers: new Headers(headers),
           redirect: manual ? 'manual' : 'error',
           signal: options.signal ?? controller.signal,
@@ -400,6 +400,7 @@ export class CalibreClient {
   }
 
   async getPosition(bookId: string, format: BookFormat): Promise<CalibrePosition | undefined> {
+    if (this.server.kind === 'calibre-web') return this.getWebPosition(bookId);
     const fmt = format.toLowerCase();
     const data = (await (
       await this.request(
@@ -426,6 +427,45 @@ export class CalibreClient {
     cfi: string,
     fraction: number,
   ): Promise<void> {
+    if (this.server.kind === 'calibre-web') {
+      const data = (await (
+        await this.request(this.webPositionUrl(bookId), {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            ReadingStates: [
+              {
+                CurrentBookmark: {
+                  ProgressPercent: fraction * 100,
+                  ContentSourceProgressPercent: fraction * 100,
+                  Location: { Value: cfi, Type: 'CFI', Source: 'Readest' },
+                },
+                // Preserve the server's reading-time statistics.
+                Statistics: null,
+                StatusInfo: {
+                  Status: fraction >= 1 ? 'Finished' : fraction > 0 ? 'Reading' : 'ReadyToRead',
+                },
+              },
+            ],
+          }),
+        })
+      ).json()) as {
+        RequestResult?: string;
+        UpdateResults?: {
+          EntitlementId: string;
+          CurrentBookmarkResult?: { Result: string };
+          StatusInfoResult?: { Result: string };
+        }[];
+      };
+      const result = data.UpdateResults?.find((entry) => entry.EntitlementId === bookId);
+      if (
+        data.RequestResult !== 'Success' ||
+        result?.CurrentBookmarkResult?.Result !== 'Success' ||
+        result.StatusInfoResult?.Result !== 'Success'
+      )
+        throw new Error(_('Calibre reading-position sync failed'));
+      return;
+    }
     await this.request(
       this.url(
         `book-set-last-read-position/${encodeURIComponent(this.server.libraryId)}/${encodeURIComponent(bookId)}/${format.toLowerCase()}`,
@@ -436,5 +476,45 @@ export class CalibreClient {
         body: JSON.stringify({ device: 'Readest', cfi: toCalibreCfi(cfi), pos_frac: fraction }),
       },
     );
+  }
+
+  private webPositionUrl(uuid: string): string {
+    const token = this.server.koboToken?.trim();
+    if (
+      !token ||
+      !/^[\da-f]{32}$/i.test(token) ||
+      !/^[\da-f]{8}(?:-[\da-f]{4}){3}-[\da-f]{12}$/i.test(uuid)
+    )
+      throw new Error(_('Calibre reading-position sync failed'));
+    return this.url(`kobo/${token}/v1/library/${uuid}/state`);
+  }
+
+  private async getWebPosition(uuid: string): Promise<CalibrePosition | undefined> {
+    const data = (await (await this.request(this.webPositionUrl(uuid))).json()) as {
+      EntitlementId: string;
+      CurrentBookmark?: {
+        LastModified?: string;
+        ProgressPercent?: number;
+        ContentSourceProgressPercent?: number;
+        Location?: { Value?: string; Type?: string; Source?: string };
+      };
+    }[];
+    const state = Array.isArray(data)
+      ? data.find((entry) => entry?.EntitlementId === uuid)
+      : undefined;
+    const bookmark = state?.CurrentBookmark;
+    if (!bookmark || typeof bookmark !== 'object' || Array.isArray(bookmark))
+      throw new Error(_('Calibre reading-position sync failed'));
+    const timestamp = Date.parse(bookmark.LastModified ?? '') / 1000;
+    if (!Number.isFinite(timestamp)) throw new Error(_('Calibre reading-position sync failed'));
+    // A first GET creates an empty state. Its creation time is not reading progress.
+    const percent = bookmark.ContentSourceProgressPercent ?? bookmark.ProgressPercent;
+    if (percent == null && !bookmark.Location) return undefined;
+    if (typeof percent !== 'number' || !Number.isFinite(percent) || percent < 0 || percent > 100)
+      throw new Error(_('Calibre reading-position sync failed'));
+    const location = bookmark.Location;
+    // KoboSpan locations do not address Readest's DOM; use their percentage instead.
+    const cfi = location?.Type === 'CFI' && location.Source === 'Readest' ? location.Value : '';
+    return { cfi: cfi ?? '', pos_frac: percent / 100, timestamp };
   }
 }

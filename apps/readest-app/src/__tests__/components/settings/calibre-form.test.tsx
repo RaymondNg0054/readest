@@ -106,7 +106,7 @@ describe('Calibre connection settings', () => {
     );
     expect(libraries).toHaveBeenCalledTimes(1);
   });
-  it('exposes library sync but never offers unsupported Calibre-Web position sync', () => {
+  it('requires a Kobo token before offering Calibre-Web position sync', () => {
     useSettingsStore.setState({
       settings: {
         calibreServers: [
@@ -123,11 +123,39 @@ describe('Calibre connection settings', () => {
       } as SystemSettings,
     });
     render(<CalibreForm onBack={() => {}} />);
-    expect(screen.queryByText('Sync Reading Position')).toBeNull();
+    expect(
+      screen.getByText('Sync Reading Position').closest('label')?.querySelector('input')?.disabled,
+    ).toBe(true);
     expect(screen.getByText('Send Local Books to Calibre')).toBeTruthy();
     expect(screen.getByText('Automatic Library Sync')).toBeTruthy();
     fireEvent.click(screen.getByText('Automatic Library Sync'));
     expect(useSettingsStore.getState().settings.calibreServers?.[0]?.enabled).toBe(false);
+  });
+  it('saves and retains a Calibre-Web Kobo token and enables position sync without an OPDS username', async () => {
+    const token = '0123456789abcdef0123456789abcdef';
+    vi.spyOn(CalibreClient.prototype, 'getLibraries').mockResolvedValue([
+      { id: 'calibre-web', name: 'Calibre-Web' },
+    ]);
+    render(<CalibreForm onBack={() => {}} />);
+    fireEvent.change(screen.getByLabelText('Server Type'), { target: { value: 'calibre-web' } });
+    fireEvent.change(screen.getByLabelText('Server URL'), {
+      target: { value: 'https://books.test' },
+    });
+    const input = screen.getByLabelText('Kobo Sync Token') as HTMLInputElement;
+    expect(input.type).toBe('password');
+    fireEvent.change(input, { target: { value: token } });
+    fireEvent.click(screen.getByRole('button', { name: 'Connect' }));
+    await screen.findByRole('button', { name: 'Save' });
+    fireEvent.click(screen.getByRole('button', { name: 'Save' }));
+    await waitFor(() => expect(mocks.sync).toHaveBeenCalledTimes(1));
+    expect(useSettingsStore.getState().settings.calibreServers?.[0]?.koboToken).toBe(token);
+    expect(input.value).toBe('');
+    const label = screen.getByText('Sync Reading Position');
+    expect(label.closest('label')?.querySelector('input')?.disabled).toBe(false);
+    fireEvent.click(label);
+    expect(useSettingsStore.getState().settings.calibreServers?.[0]?.syncProgress).toBe(true);
+    fireEvent.click(screen.getByRole('button', { name: 'Edit' }));
+    expect((screen.getByLabelText('Kobo Sync Token') as HTMLInputElement).value).toBe(token);
   });
   it('sends local books by default and lets the user turn it off', () => {
     useSettingsStore.setState({

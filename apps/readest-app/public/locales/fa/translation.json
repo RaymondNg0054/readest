@@ -2626,7 +2626,6 @@
   "Connecting...": "در حال اتصال...",
   "Metadata and tags are imported from Calibre. Local edits are not sent to the server.": "فراداده و برچسب‌ها از Calibre وارد می‌شوند. ویرایش‌های محلی به سرور ارسال نمی‌شوند.",
   "Removed server books are marked unavailable; downloaded files and annotations are never deleted automatically.": "کتاب‌های حذف‌شده از سرور به‌عنوان «در دسترس نیست» علامت‌گذاری می‌شوند؛ فایل‌های دانلودشده و یادداشت‌ها هرگز به‌طور خودکار حذف نمی‌شوند.",
-  "EPUB reading-position sync requires a signed-in Calibre Content Server account with write access. Calibre-Web does not provide this API.": "همگام‌سازی موقعیت مطالعه EPUB به ورود با حسابی در سرور محتوای Calibre با دسترسی نوشتن نیاز دارد. Calibre-Web این API را ارائه نمی‌کند.",
   "Use HTTPS on untrusted networks. HTTP sends your credentials without encryption.": "در شبکه‌های نامطمئن از HTTPS استفاده کنید. HTTP اعتبارنامه‌های شما را بدون رمزگذاری ارسال می‌کند.",
   "Browser connections require the server to allow this site in its CORS policy. HTTPS pages cannot connect to an HTTP server. Use the native app for local servers.": "برای اتصال از مرورگر، سرور باید این سایت را در سیاست CORS خود مجاز کند. صفحات HTTPS نمی‌توانند به سرور HTTP متصل شوند. برای سرورهای محلی از برنامه بومی استفاده کنید.",
   "Calibre authentication failed. Check your credentials and permissions.": "احراز هویت Calibre ناموفق بود. اعتبارنامه‌ها و مجوزهای خود را بررسی کنید.",
@@ -2649,5 +2648,8 @@
   "Sent to Calibre: {{sent}}": "ارسال‌شده به Calibre: {{sent}}",
   "Sending books to Calibre-Web requires the desktop or mobile app.": "ارسال کتاب به Calibre-Web به برنامه دسکتاپ یا موبایل نیاز دارد.",
   "Calibre-Web login failed. Check your credentials.": "ورود به Calibre-Web ناموفق بود. اعتبارنامه‌های خود را بررسی کنید.",
-  "Calibre-Web uploads are off or this account cannot upload.": "بارگذاری در Calibre-Web خاموش است یا این حساب اجازه بارگذاری ندارد."
+  "Calibre-Web uploads are off or this account cannot upload.": "بارگذاری در Calibre-Web خاموش است یا این حساب اجازه بارگذاری ندارد.",
+  "Kobo Sync Token": "توکن همگام‌سازی Kobo",
+  "EPUB reading-position sync requires a writable Calibre account or a Calibre-Web Kobo sync token.": "همگام‌سازی موقعیت مطالعهٔ EPUB به حساب Calibre با دسترسی نوشتن یا توکن همگام‌سازی Kobo از Calibre-Web نیاز دارد.",
+  "Enable Kobo sync in Calibre-Web, then copy the token from the Kobo sync URL in your profile.": "همگام‌سازی Kobo را در Calibre-Web فعال کنید، سپس توکن را از نشانی همگام‌سازی Kobo در نمایهٔ خود کپی کنید."
 }

@@ -2758,7 +2758,6 @@
   "Connecting...": "Povezovanje...",
   "Metadata and tags are imported from Calibre. Local edits are not sent to the server.": "Metapodatki in oznake se uvozijo iz Calibre. Lokalne spremembe se ne pošljejo na strežnik.",
   "Removed server books are marked unavailable; downloaded files and annotations are never deleted automatically.": "Knjige, odstranjene s strežnika, so označene kot nedostopne; prenesene datoteke in opombe se nikoli ne izbrišejo samodejno.",
-  "EPUB reading-position sync requires a signed-in Calibre Content Server account with write access. Calibre-Web does not provide this API.": "Sinhronizacija bralnega položaja EPUB zahteva prijavljen račun Strežnika vsebine Calibre s pravico pisanja. Calibre-Web tega API-ja ne ponuja.",
   "Use HTTPS on untrusted networks. HTTP sends your credentials without encryption.": "V nezaupanja vrednih omrežjih uporabljajte HTTPS. HTTP pošilja vaše poverilnice nešifrirano.",
   "Browser connections require the server to allow this site in its CORS policy. HTTPS pages cannot connect to an HTTP server. Use the native app for local servers.": "Povezave iz brskalnika zahtevajo, da strežnik v svoji politiki CORS dovoli to spletno mesto. Strani HTTPS se ne morejo povezati s strežnikom HTTP. Za lokalne strežnike uporabite izvorno aplikacijo.",
   "Calibre authentication failed. Check your credentials and permissions.": "Preverjanje pristnosti v Calibre ni uspelo. Preverite poverilnice in dovoljenja.",
@@ -2781,5 +2780,8 @@
   "Sent to Calibre: {{sent}}": "Poslano v Calibre: {{sent}}",
   "Sending books to Calibre-Web requires the desktop or mobile app.": "Pošiljanje knjig v Calibre-Web zahteva namizno ali mobilno aplikacijo.",
   "Calibre-Web login failed. Check your credentials.": "Prijava v Calibre-Web ni uspela. Preverite poverilnice.",
-  "Calibre-Web uploads are off or this account cannot upload.": "Nalaganje v Calibre-Web je izklopljeno ali ta račun ne more nalagati."
+  "Calibre-Web uploads are off or this account cannot upload.": "Nalaganje v Calibre-Web je izklopljeno ali ta račun ne more nalagati.",
+  "Kobo Sync Token": "Žeton za sinhronizacijo Kobo",
+  "EPUB reading-position sync requires a writable Calibre account or a Calibre-Web Kobo sync token.": "Sinhronizacija položaja branja EPUB zahteva račun Calibre s pravico pisanja ali žeton za sinhronizacijo Kobo iz Calibre-Web.",
+  "Enable Kobo sync in Calibre-Web, then copy the token from the Kobo sync URL in your profile.": "V Calibre-Web omogočite sinhronizacijo Kobo, nato pa kopirajte žeton iz URL-ja za sinhronizacijo Kobo v svojem profilu."
 }

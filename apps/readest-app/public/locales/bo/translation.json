@@ -2560,7 +2560,6 @@
   "Connecting...": "འབྲེལ་མཐུད་བྱེད་བཞིན...",
   "Metadata and tags are imported from Calibre. Local edits are not sent to the server.": "གནད་སྨིན་གོ་དོན་དང་མཚོན་འགྲེལ་ Calibre ནས་ནང་འདྲེན་བྱེད། ས་གནས་ཀྱི་རྩོམ་སྒྲིག་ཞབས་ཞུ་བར་མི་གཏོང་།",
   "Removed server books are marked unavailable; downloaded files and annotations are never deleted automatically.": "ཞབས་ཞུ་བ་ནས་བསུབས་པའི་དཔེ་དེབ་ལ་ཐོབ་མི་ཐུབ་ཅེས་རྟགས་རྒྱག ཕབ་ལེན་བྱས་པའི་ཡིག་ཆ་དང་མཆན་ནམ་ཡང་རང་འགུལ་གྱིས་མི་སུབ།",
-  "EPUB reading-position sync requires a signed-in Calibre Content Server account with write access. Calibre-Web does not provide this API.": "EPUB ཀློག་སའི་གནས་ས་མཉམ་སྒྲིག་ལ་འབྲི་དབང་ཡོད་པའི་ Calibre ནང་དོན་ཞབས་ཞུ་བའི་རྩིས་ཐོར་ནང་བསྐྱོད་བྱ་དགོས། Calibre-Web ཡིས་ API འདི་མཁོ་སྤྲོད་མི་བྱེད།",
   "Use HTTPS on untrusted networks. HTTP sends your credentials without encryption.": "ཡིད་ཆེས་མེད་པའི་དྲ་བའི་ཐོག་ HTTPS བེད་སྤྱོད་གནང་། HTTP ཡིས་ཁྱེད་ཀྱི་ངོས་སྦྱོར་ཆ་འཕྲིན་གསང་སྦས་མེད་པར་གཏོང་།",
   "Browser connections require the server to allow this site in its CORS policy. HTTPS pages cannot connect to an HTTP server. Use the native app for local servers.": "བཤར་ཆས་ནས་འབྲེལ་མཐུད་བྱེད་པར་ཞབས་ཞུ་བའི་ CORS སྲིད་ཇུས་ཀྱིས་དྲ་ཚིགས་འདི་ལ་ཆོག་མཆན་སྤྲོད་དགོས། HTTPS ཤོག་ངོས་ཀྱིས་ HTTP ཞབས་ཞུ་བར་འབྲེལ་མཐུད་བྱེད་མི་ཐུབ། ས་གནས་ཞབས་ཞུ་བར་ཌེསིཀ་ཏོབ་བམ་ལག་ཐོགས་མཉེན་ཆས་བེད་སྤྱོད་གནང་།",
   "Calibre authentication failed. Check your credentials and permissions.": "Calibre ངོ་སྤྲོད་མ་ཐུབ། ངོས་སྦྱོར་ཆ་འཕྲིན་དང་དབང་ཚད་ཞིབ་བཤེར་གནང་།",
@@ -2583,5 +2582,8 @@
   "Sent to Calibre: {{sent}}": "Calibre ལ་སྐུར་ཟིན: {{sent}}",
   "Sending books to Calibre-Web requires the desktop or mobile app.": "Calibre-Web ལ་དཔེ་དེབ་སྐུར་བར་ཌེསིཀ་ཏོབ་བམ་ལག་ཐོགས་མཉེན་ཆས་དགོས།",
   "Calibre-Web login failed. Check your credentials.": "Calibre-Web ནང་བསྐྱོད་མ་ཐུབ། ངོས་སྦྱོར་ཆ་འཕྲིན་ཞིབ་བཤེར་གནང་།",
-  "Calibre-Web uploads are off or this account cannot upload.": "Calibre-Web ཡར་འགོད་སྒོ་བརྒྱབ་ཡོད་པའམ། རྩིས་ཐོ་འདིས་ཡར་འགོད་བྱེད་མི་ཐུབ།"
+  "Calibre-Web uploads are off or this account cannot upload.": "Calibre-Web ཡར་འགོད་སྒོ་བརྒྱབ་ཡོད་པའམ། རྩིས་ཐོ་འདིས་ཡར་འགོད་བྱེད་མི་ཐུབ།",
+  "Kobo Sync Token": "Kobo མཉམ་སྒྲིག་རྟགས།",
+  "EPUB reading-position sync requires a writable Calibre account or a Calibre-Web Kobo sync token.": "EPUB ཀློག་པའི་གནས་མཉམ་སྒྲིག་བྱེད་པར་འབྲི་བའི་དབང་ཆ་ཡོད་པའི་Calibre ཐོ་ཁོངས་སམ་Calibre-Web ཡི་Kobo མཉམ་སྒྲིག་རྟགས་དགོས།",
+  "Enable Kobo sync in Calibre-Web, then copy the token from the Kobo sync URL in your profile.": "Calibre-Web ནང་Kobo མཉམ་སྒྲིག་སྤྱོད་འགོ་ཚུགས་ནས། རང་གི་སྒེར་གནས་ནང་གི་Kobo མཉམ་སྒྲིག་དྲ་གནས་ལས་རྟགས་འདྲ་བཤུས་བྱོས།"
 }

@@ -2626,7 +2626,6 @@
   "Connecting...": "Csatlakozás...",
   "Metadata and tags are imported from Calibre. Local edits are not sent to the server.": "A metaadatok és a címkék a Calibre-ből kerülnek importálásra. A helyi módosítások nem kerülnek elküldésre a szerverre.",
   "Removed server books are marked unavailable; downloaded files and annotations are never deleted automatically.": "A szerverről eltávolított könyvek nem elérhetőként lesznek megjelölve; a letöltött fájlok és megjegyzések soha nem törlődnek automatikusan.",
-  "EPUB reading-position sync requires a signed-in Calibre Content Server account with write access. Calibre-Web does not provide this API.": "Az EPUB olvasási pozíció szinkronizálásához bejelentkezett, írási joggal rendelkező Calibre tartalomszerver-fiók szükséges. A Calibre-Web nem biztosítja ezt az API-t.",
   "Use HTTPS on untrusted networks. HTTP sends your credentials without encryption.": "Nem megbízható hálózatokon használjon HTTPS-t. A HTTP titkosítás nélkül küldi el a hitelesítő adatokat.",
   "Browser connections require the server to allow this site in its CORS policy. HTTPS pages cannot connect to an HTTP server. Use the native app for local servers.": "Böngészőből való csatlakozáshoz a szerver CORS-szabályzatának engedélyeznie kell ezt az oldalt. HTTPS-oldalak nem csatlakozhatnak HTTP-szerverhez. Helyi szerverekhez használja a natív alkalmazást.",
   "Calibre authentication failed. Check your credentials and permissions.": "A Calibre hitelesítés sikertelen. Ellenőrizze a hitelesítő adatokat és a jogosultságokat.",
@@ -2649,5 +2648,8 @@
   "Sent to Calibre: {{sent}}": "Elküldve a Calibre-be: {{sent}}",
   "Sending books to Calibre-Web requires the desktop or mobile app.": "A könyvek Calibre-Web szerverre küldéséhez az asztali vagy mobilalkalmazás szükséges.",
   "Calibre-Web login failed. Check your credentials.": "A Calibre-Web bejelentkezés sikertelen. Ellenőrizze a hitelesítő adatokat.",
-  "Calibre-Web uploads are off or this account cannot upload.": "A Calibre-Web feltöltések ki vannak kapcsolva, vagy ez a fiók nem tölthet fel."
+  "Calibre-Web uploads are off or this account cannot upload.": "A Calibre-Web feltöltések ki vannak kapcsolva, vagy ez a fiók nem tölthet fel.",
+  "Kobo Sync Token": "Kobo szinkronizálási token",
+  "EPUB reading-position sync requires a writable Calibre account or a Calibre-Web Kobo sync token.": "Az EPUB olvasási pozíciójának szinkronizálásához írási jogosultsággal rendelkező Calibre-fiók vagy Calibre-Web Kobo szinkronizálási token szükséges.",
+  "Enable Kobo sync in Calibre-Web, then copy the token from the Kobo sync URL in your profile.": "Engedélyezze a Kobo szinkronizálást a Calibre-Webben, majd másolja ki a tokent a profiljában található Kobo szinkronizálási URL-ből."
 }

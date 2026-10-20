@@ -179,7 +179,7 @@ export function sanitizeSettingsForBackup(
     }
     if (Array.isArray(clone.calibreServers)) {
       clone.calibreServers = clone.calibreServers.map(
-        ({ username: _username, password: _password, ...server }) => ({
+        ({ username: _username, password: _password, koboToken: _koboToken, ...server }) => ({
           ...server,
           enabled: false,
           syncProgress: false,

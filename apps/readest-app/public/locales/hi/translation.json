@@ -2626,7 +2626,6 @@
   "Connecting...": "कनेक्ट हो रहा है...",
   "Metadata and tags are imported from Calibre. Local edits are not sent to the server.": "मेटाडाटा और टैग Calibre से आयात किए जाते हैं। स्थानीय बदलाव सर्वर पर नहीं भेजे जाते।",
   "Removed server books are marked unavailable; downloaded files and annotations are never deleted automatically.": "सर्वर से हटाई गई पुस्तकें अनुपलब्ध के रूप में चिह्नित की जाती हैं; डाउनलोड की गई फ़ाइलें और टिप्पणियाँ कभी भी स्वचालित रूप से नहीं हटाई जातीं।",
-  "EPUB reading-position sync requires a signed-in Calibre Content Server account with write access. Calibre-Web does not provide this API.": "EPUB पढ़ने की स्थिति सिंक करने के लिए लिखने की अनुमति वाला, साइन-इन किया हुआ Calibre कंटेंट सर्वर खाता आवश्यक है। Calibre-Web यह API प्रदान नहीं करता।",
   "Use HTTPS on untrusted networks. HTTP sends your credentials without encryption.": "अविश्वसनीय नेटवर्क पर HTTPS का उपयोग करें। HTTP आपके क्रेडेंशियल बिना एन्क्रिप्शन के भेजता है।",
   "Browser connections require the server to allow this site in its CORS policy. HTTPS pages cannot connect to an HTTP server. Use the native app for local servers.": "ब्राउज़र से कनेक्शन के लिए सर्वर की CORS नीति में इस साइट की अनुमति होनी चाहिए। HTTPS पेज HTTP सर्वर से कनेक्ट नहीं हो सकते। स्थानीय सर्वर के लिए नेटिव ऐप का उपयोग करें।",
   "Calibre authentication failed. Check your credentials and permissions.": "Calibre प्रमाणीकरण विफल। अपने क्रेडेंशियल और अनुमतियाँ जांचें।",
@@ -2649,5 +2648,8 @@
   "Sent to Calibre: {{sent}}": "Calibre को भेजी गईं: {{sent}}",
   "Sending books to Calibre-Web requires the desktop or mobile app.": "Calibre-Web को पुस्तकें भेजने के लिए डेस्कटॉप या मोबाइल ऐप आवश्यक है।",
   "Calibre-Web login failed. Check your credentials.": "Calibre-Web लॉगिन विफल। अपने क्रेडेंशियल जांचें।",
-  "Calibre-Web uploads are off or this account cannot upload.": "Calibre-Web अपलोड बंद हैं या यह खाता अपलोड नहीं कर सकता।"
+  "Calibre-Web uploads are off or this account cannot upload.": "Calibre-Web अपलोड बंद हैं या यह खाता अपलोड नहीं कर सकता।",
+  "Kobo Sync Token": "Kobo सिंक टोकन",
+  "EPUB reading-position sync requires a writable Calibre account or a Calibre-Web Kobo sync token.": "EPUB पढ़ने की स्थिति सिंक करने के लिए लिखने की अनुमति वाला Calibre खाता या Calibre-Web का Kobo सिंक टोकन चाहिए।",
+  "Enable Kobo sync in Calibre-Web, then copy the token from the Kobo sync URL in your profile.": "Calibre-Web में Kobo सिंक चालू करें, फिर अपनी प्रोफ़ाइल में Kobo सिंक URL से टोकन कॉपी करें।"
 }

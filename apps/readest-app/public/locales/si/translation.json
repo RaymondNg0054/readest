@@ -2626,7 +2626,6 @@
   "Connecting...": "සම්බන්ධ වෙමින්...",
   "Metadata and tags are imported from Calibre. Local edits are not sent to the server.": "මෙටාඩේටා සහ ටැග් Calibre වෙතින් ආයාත කෙරේ. දේශීය සංස්කරණ සේවාදායකයට යවනු නොලැබේ.",
   "Removed server books are marked unavailable; downloaded files and annotations are never deleted automatically.": "සේවාදායකයෙන් ඉවත් කළ පොත් ලබා ගත නොහැකි ලෙස සලකුණු කෙරේ; බාගත කළ ගොනු සහ අනුසටහන් කිසිවිටෙක ස්වයංක්‍රීයව මකා නොදැමේ.",
-  "EPUB reading-position sync requires a signed-in Calibre Content Server account with write access. Calibre-Web does not provide this API.": "EPUB කියවීමේ ස්ථාන සමමුහුර්තකරණයට ලිවීමේ ප්‍රවේශය සහිත, පුරනය වූ Calibre අන්තර්ගත සේවාදායක ගිණුමක් අවශ්‍යයි. Calibre-Web මෙම API සපයන්නේ නැත.",
   "Use HTTPS on untrusted networks. HTTP sends your credentials without encryption.": "විශ්වාස නොකළ ජාල මත HTTPS භාවිත කරන්න. HTTP ඔබේ අක්තපත්‍ර සංකේතනයකින් තොරව යවයි.",
   "Browser connections require the server to allow this site in its CORS policy. HTTPS pages cannot connect to an HTTP server. Use the native app for local servers.": "බ්‍රවුසර සම්බන්ධතා සඳහා සේවාදායකයේ CORS ප්‍රතිපත්තිය මෙම අඩවියට ඉඩ දිය යුතුය. HTTPS පිටුවලට HTTP සේවාදායකයකට සම්බන්ධ විය නොහැක. දේශීය සේවාදායක සඳහා ඩෙස්ක්ටොප් හෝ ජංගම යෙදුම භාවිත කරන්න.",
   "Calibre authentication failed. Check your credentials and permissions.": "Calibre සත්‍යාපනය අසාර්ථකයි. ඔබේ අක්තපත්‍ර සහ අවසර පරීක්ෂා කරන්න.",
@@ -2649,5 +2648,8 @@
   "Sent to Calibre: {{sent}}": "Calibre වෙත යවන ලදි: {{sent}}",
   "Sending books to Calibre-Web requires the desktop or mobile app.": "Calibre-Web වෙත පොත් යැවීමට ඩෙස්ක්ටොප් හෝ ජංගම යෙදුම අවශ්‍යයි.",
   "Calibre-Web login failed. Check your credentials.": "Calibre-Web පිවිසුම අසාර්ථකයි. ඔබේ අක්තපත්‍ර පරීක්ෂා කරන්න.",
-  "Calibre-Web uploads are off or this account cannot upload.": "Calibre-Web උඩුගත කිරීම් අක්‍රීයයි, නැතහොත් මෙම ගිණුමට උඩුගත කළ නොහැක."
+  "Calibre-Web uploads are off or this account cannot upload.": "Calibre-Web උඩුගත කිරීම් අක්‍රීයයි, නැතහොත් මෙම ගිණුමට උඩුගත කළ නොහැක.",
+  "Kobo Sync Token": "Kobo සමමුහුර්ත ටෝකනය",
+  "EPUB reading-position sync requires a writable Calibre account or a Calibre-Web Kobo sync token.": "EPUB කියවීමේ ස්ථානය සමමුහුර්ත කිරීමට ලිවීමේ අවසර ඇති Calibre ගිණුමක් හෝ Calibre-Web Kobo සමමුහුර්ත ටෝකනයක් අවශ්‍යයි.",
+  "Enable Kobo sync in Calibre-Web, then copy the token from the Kobo sync URL in your profile.": "Calibre-Web හි Kobo සමමුහුර්තකරණය සක්‍රිය කර, ඔබේ පැතිකඩේ Kobo සමමුහුර්ත URL එකෙන් ටෝකනය පිටපත් කරන්න."
 }

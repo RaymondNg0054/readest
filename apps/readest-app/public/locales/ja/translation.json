@@ -2560,7 +2560,6 @@
   "Connecting...": "接続中...",
   "Metadata and tags are imported from Calibre. Local edits are not sent to the server.": "メタデータとタグはCalibreからインポートされます。ローカルでの編集はサーバーに送信されません。",
   "Removed server books are marked unavailable; downloaded files and annotations are never deleted automatically.": "サーバーから削除された書籍は利用不可としてマークされます。ダウンロード済みのファイルと注釈が自動的に削除されることはありません。",
-  "EPUB reading-position sync requires a signed-in Calibre Content Server account with write access. Calibre-Web does not provide this API.": "EPUBの読書位置の同期には、書き込み権限を持つCalibreコンテンツサーバーのアカウントでサインインしている必要があります。Calibre-WebはこのAPIを提供していません。",
   "Use HTTPS on untrusted networks. HTTP sends your credentials without encryption.": "信頼できないネットワークではHTTPSを使用してください。HTTPでは認証情報が暗号化されずに送信されます。",
   "Browser connections require the server to allow this site in its CORS policy. HTTPS pages cannot connect to an HTTP server. Use the native app for local servers.": "ブラウザから接続するには、サーバーのCORSポリシーでこのサイトを許可する必要があります。HTTPSページからHTTPサーバーには接続できません。ローカルサーバーにはネイティブアプリを使用してください。",
   "Calibre authentication failed. Check your credentials and permissions.": "Calibreの認証に失敗しました。認証情報と権限を確認してください。",
@@ -2583,5 +2582,8 @@
   "Sent to Calibre: {{sent}}": "Calibreに送信：{{sent}}",
   "Sending books to Calibre-Web requires the desktop or mobile app.": "Calibre-Webへの書籍の送信には、デスクトップまたはモバイルアプリが必要です。",
   "Calibre-Web login failed. Check your credentials.": "Calibre-Webへのログインに失敗しました。認証情報を確認してください。",
-  "Calibre-Web uploads are off or this account cannot upload.": "Calibre-Webのアップロードがオフになっているか、このアカウントにはアップロード権限がありません。"
+  "Calibre-Web uploads are off or this account cannot upload.": "Calibre-Webのアップロードがオフになっているか、このアカウントにはアップロード権限がありません。",
+  "Kobo Sync Token": "Kobo同期トークン",
+  "EPUB reading-position sync requires a writable Calibre account or a Calibre-Web Kobo sync token.": "EPUBの読書位置を同期するには、書き込み権限のあるCalibreアカウントか、Calibre-WebのKobo同期トークンが必要です。",
+  "Enable Kobo sync in Calibre-Web, then copy the token from the Kobo sync URL in your profile.": "Calibre-WebでKobo同期を有効にして、プロフィールのKobo同期URLからトークンをコピーしてください。"
 }

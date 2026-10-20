@@ -2626,7 +2626,6 @@
   "Connecting...": "இணைக்கப்படுகிறது...",
   "Metadata and tags are imported from Calibre. Local edits are not sent to the server.": "மெட்டாடேட்டாவும் குறிச்சொற்களும் Calibre இலிருந்து இறக்குமதி செய்யப்படுகின்றன. உள்ளூர் திருத்தங்கள் சர்வருக்கு அனுப்பப்படாது.",
   "Removed server books are marked unavailable; downloaded files and annotations are never deleted automatically.": "சர்வரிலிருந்து அகற்றப்பட்ட புத்தகங்கள் கிடைக்கவில்லை எனக் குறிக்கப்படும்; பதிவிறக்கிய கோப்புகளும் சிறுகுறிப்புகளும் ஒருபோதும் தானாக நீக்கப்படாது.",
-  "EPUB reading-position sync requires a signed-in Calibre Content Server account with write access. Calibre-Web does not provide this API.": "EPUB வாசிப்பு நிலை ஒத்திசைவுக்கு, எழுதும் அனுமதியுடன் உள்நுழைந்த Calibre உள்ளடக்க சர்வர் கணக்கு தேவை. Calibre-Web இந்த API-ஐ வழங்காது.",
   "Use HTTPS on untrusted networks. HTTP sends your credentials without encryption.": "நம்பகமற்ற நெட்வொர்க்குகளில் HTTPS ஐப் பயன்படுத்தவும். HTTP உங்கள் அங்கீகாரத் தரவுகளை குறியாக்கம் இல்லாமல் அனுப்புகிறது.",
   "Browser connections require the server to allow this site in its CORS policy. HTTPS pages cannot connect to an HTTP server. Use the native app for local servers.": "உலாவி இணைப்புகளுக்கு, சர்வரின் CORS கொள்கை இந்தத் தளத்தை அனுமதிக்க வேண்டும். HTTPS பக்கங்கள் HTTP சர்வருடன் இணைக்க முடியாது. உள்ளூர் சர்வர்களுக்கு நேட்டிவ் பயன்பாட்டைப் பயன்படுத்தவும்.",
   "Calibre authentication failed. Check your credentials and permissions.": "Calibre அங்கீகாரம் தோல்வியடைந்தது. உங்கள் அங்கீகாரத் தரவுகளையும் அனுமதிகளையும் சரிபார்க்கவும்.",
@@ -2649,5 +2648,8 @@
   "Sent to Calibre: {{sent}}": "Calibre-க்கு அனுப்பப்பட்டவை: {{sent}}",
   "Sending books to Calibre-Web requires the desktop or mobile app.": "Calibre-Web-க்கு புத்தகங்களை அனுப்ப டெஸ்க்டாப் அல்லது மொபைல் செயலி தேவை.",
   "Calibre-Web login failed. Check your credentials.": "Calibre-Web உள்நுழைவு தோல்வியடைந்தது. உங்கள் அங்கீகாரத் தரவுகளைச் சரிபார்க்கவும்.",
-  "Calibre-Web uploads are off or this account cannot upload.": "Calibre-Web பதிவேற்றங்கள் முடக்கப்பட்டுள்ளன அல்லது இந்தக் கணக்கால் பதிவேற்ற முடியாது."
+  "Calibre-Web uploads are off or this account cannot upload.": "Calibre-Web பதிவேற்றங்கள் முடக்கப்பட்டுள்ளன அல்லது இந்தக் கணக்கால் பதிவேற்ற முடியாது.",
+  "Kobo Sync Token": "Kobo ஒத்திசைவு டோக்கன்",
+  "EPUB reading-position sync requires a writable Calibre account or a Calibre-Web Kobo sync token.": "EPUB வாசிப்பு நிலையை ஒத்திசைக்க எழுதும் அனுமதியுள்ள Calibre கணக்கு அல்லது Calibre-Web Kobo ஒத்திசைவு டோக்கன் தேவை.",
+  "Enable Kobo sync in Calibre-Web, then copy the token from the Kobo sync URL in your profile.": "Calibre-Web இல் Kobo ஒத்திசைவை இயக்கி, உங்கள் சுயவிவரத்தில் உள்ள Kobo ஒத்திசைவு URL இலிருந்து டோக்கனை நகலெடுக்கவும்."
 }

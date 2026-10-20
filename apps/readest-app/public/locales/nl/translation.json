@@ -2626,7 +2626,6 @@
   "Connecting...": "Verbinden...",
   "Metadata and tags are imported from Calibre. Local edits are not sent to the server.": "Metadata en tags worden geïmporteerd uit Calibre. Lokale wijzigingen worden niet naar de server verzonden.",
   "Removed server books are marked unavailable; downloaded files and annotations are never deleted automatically.": "Boeken die van de server zijn verwijderd, worden als niet beschikbaar gemarkeerd; gedownloade bestanden en aantekeningen worden nooit automatisch verwijderd.",
-  "EPUB reading-position sync requires a signed-in Calibre Content Server account with write access. Calibre-Web does not provide this API.": "Synchronisatie van de EPUB-leespositie vereist een aangemeld account op de Calibre-inhoudsserver met schrijfrechten. Calibre-Web biedt deze API niet.",
   "Use HTTPS on untrusted networks. HTTP sends your credentials without encryption.": "Gebruik HTTPS op niet-vertrouwde netwerken. HTTP verzendt je inloggegevens onversleuteld.",
   "Browser connections require the server to allow this site in its CORS policy. HTTPS pages cannot connect to an HTTP server. Use the native app for local servers.": "Voor verbindingen vanuit de browser moet de server deze site toestaan in zijn CORS-beleid. HTTPS-pagina's kunnen geen verbinding maken met een HTTP-server. Gebruik de native app voor lokale servers.",
   "Calibre authentication failed. Check your credentials and permissions.": "Calibre-authenticatie mislukt. Controleer je inloggegevens en machtigingen.",
@@ -2649,5 +2648,8 @@
   "Sent to Calibre: {{sent}}": "Verstuurd naar Calibre: {{sent}}",
   "Sending books to Calibre-Web requires the desktop or mobile app.": "Boeken naar Calibre-Web versturen vereist de desktop- of mobiele app.",
   "Calibre-Web login failed. Check your credentials.": "Inloggen bij Calibre-Web mislukt. Controleer je inloggegevens.",
-  "Calibre-Web uploads are off or this account cannot upload.": "Uploaden naar Calibre-Web staat uit of dit account kan niet uploaden."
+  "Calibre-Web uploads are off or this account cannot upload.": "Uploaden naar Calibre-Web staat uit of dit account kan niet uploaden.",
+  "Kobo Sync Token": "Kobo-synchronisatietoken",
+  "EPUB reading-position sync requires a writable Calibre account or a Calibre-Web Kobo sync token.": "Voor het synchroniseren van de EPUB-leespositie is een Calibre-account met schrijftoegang of een Kobo-synchronisatietoken van Calibre-Web vereist.",
+  "Enable Kobo sync in Calibre-Web, then copy the token from the Kobo sync URL in your profile.": "Schakel Kobo-synchronisatie in Calibre-Web in en kopieer het token uit de Kobo-synchronisatie-URL in je profiel."
 }

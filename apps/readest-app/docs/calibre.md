@@ -64,7 +64,8 @@ connection.
 ## Reading positions
 
 **Sync Reading Position** is opt-in. It supports EPUBs on an authenticated,
-writable official Calibre Content Server through its last-read-position API.
+writable official Calibre Content Server through its last-read-position API,
+and on Calibre-Web through its Kobo reading-state API.
 The latest remote device position is read before any local write; page turns are
 debounced, with a flush on the reader's existing manual/close sync event. A failed
 pull does not authorize overwriting an unread remote position. Local reading
@@ -75,9 +76,24 @@ path from the document node. Readest uses `epubcfi(/6/12!/4/...)`, so the client
 converts in both directions. Calibre's web viewer applies another device's
 position when a book is first opened in that browser, or from its **Sync** action.
 
-Calibre-Web's OPDS API has **no reading-position write endpoint**, so Calibre-Web
-connections have no position sync. Kobo sync (#4411) is a
-separate protocol and is not implemented here. Non-EPUB positions are not synced:
+For **Calibre-Web**, enable **Kobo sync** in the server's feature configuration.
+In your Calibre-Web profile, use **Create/View** to obtain the Kobo sync URL.
+Copy its token (the 32 characters after `/kobo/`) into **Kobo Sync Token** when
+connecting or editing the connection in Readest, save, then turn on **Sync Reading
+Position**. Sync the library once so existing books acquire their server UUIDs.
+The token belongs to the account whose reading positions will be synced; it can
+also authenticate position requests when OPDS browsing is anonymous. It stays on
+this device and is excluded from backups unless credentials are explicitly included.
+
+Readest saves its exact EPUB CFI, percentage and reading status in Calibre-Web's
+Kobo reading state, preserving reading-time statistics. Other Readest clients can
+restore the exact CFI. Positions written by clients using a different location
+format (such as KoboSpan) are restored by percentage, which is approximate.
+This does not sync Calibre-Web's browser-local reader position or its separate
+manual bookmark. Exact location compatibility with Kobo devices is not provided;
+this uses the reading-state API, not the full Kobo device sync protocol (#4411).
+
+Non-EPUB positions are not synced:
 Calibre's converted-format CFIs do not address the same document as Readest's.
 
 ## Large libraries and browser access
@@ -113,5 +129,8 @@ Use a disposable library/account, not a production library:
    sent again before ingestion finishes.
 6. Opt into EPUB position sync on the official server. Read in both clients, close
    quickly while a pull is pending, and verify no stale opening position is pushed.
+   For Calibre-Web, configure the Kobo token, sync the library, then verify an exact
+   position round trip between Readest clients, percentage fallback for another
+   client's location, and that a failed pull or invalid token never causes a push.
 7. Check mobile/desktop widths, dark mode, RTL and e-ink. In the browser, test CORS
    refusal and mixed-content refusal as well as a CORS-enabled server.

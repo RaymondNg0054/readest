@@ -10,6 +10,8 @@ export interface CalibreServer {
   libraryId: string;
   enabled: boolean;
   syncProgress: boolean;
+  /** Device-local Calibre-Web Kobo API credential, generated in the user's profile. */
+  koboToken?: string;
   /** Send local books the server does not have. On unless set to false. */
   uploadBooks?: boolean;
 }
@@ -19,6 +21,8 @@ export interface CalibreSource {
   serverId: string;
   libraryId: string;
   bookId: string;
+  /** Calibre-Web's reading-state API uses the UUID, not the numeric download id. */
+  uuid?: string;
   formats: BookFormat[];
   modified?: string;
   missing?: boolean;
@@ -26,6 +30,7 @@ export interface CalibreSource {
 
 export interface CalibreBookRecord {
   id: string;
+  uuid?: string;
   title: string;
   authors: string[];
   formats: BookFormat[];

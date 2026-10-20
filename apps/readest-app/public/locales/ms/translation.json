@@ -2560,7 +2560,6 @@
   "Connecting...": "Menyambung...",
   "Metadata and tags are imported from Calibre. Local edits are not sent to the server.": "Metadata dan tag diimport daripada Calibre. Suntingan setempat tidak dihantar ke pelayan.",
   "Removed server books are marked unavailable; downloaded files and annotations are never deleted automatically.": "Buku yang dialih keluar daripada pelayan ditandakan sebagai tidak tersedia; fail yang dimuat turun dan anotasi tidak akan dipadam secara automatik.",
-  "EPUB reading-position sync requires a signed-in Calibre Content Server account with write access. Calibre-Web does not provide this API.": "Penyegerakan posisi bacaan EPUB memerlukan akaun Pelayan Kandungan Calibre yang telah log masuk dengan akses tulis. Calibre-Web tidak menyediakan API ini.",
   "Use HTTPS on untrusted networks. HTTP sends your credentials without encryption.": "Gunakan HTTPS pada rangkaian yang tidak dipercayai. HTTP menghantar kelayakan anda tanpa penyulitan.",
   "Browser connections require the server to allow this site in its CORS policy. HTTPS pages cannot connect to an HTTP server. Use the native app for local servers.": "Sambungan pelayar memerlukan pelayan membenarkan laman ini dalam dasar CORS pelayan tersebut. Halaman HTTPS tidak boleh menyambung ke pelayan HTTP. Gunakan aplikasi natif untuk pelayan setempat.",
   "Calibre authentication failed. Check your credentials and permissions.": "Pengesahan Calibre gagal. Semak kelayakan dan kebenaran anda.",
@@ -2583,5 +2582,8 @@
   "Sent to Calibre: {{sent}}": "Dihantar ke Calibre: {{sent}}",
   "Sending books to Calibre-Web requires the desktop or mobile app.": "Menghantar buku ke Calibre-Web memerlukan aplikasi desktop atau mudah alih.",
   "Calibre-Web login failed. Check your credentials.": "Log masuk Calibre-Web gagal. Semak kelayakan anda.",
-  "Calibre-Web uploads are off or this account cannot upload.": "Muat naik Calibre-Web dimatikan atau akaun ini tidak boleh memuat naik."
+  "Calibre-Web uploads are off or this account cannot upload.": "Muat naik Calibre-Web dimatikan atau akaun ini tidak boleh memuat naik.",
+  "Kobo Sync Token": "Token Penyegerakan Kobo",
+  "EPUB reading-position sync requires a writable Calibre account or a Calibre-Web Kobo sync token.": "Penyegerakan kedudukan bacaan EPUB memerlukan akaun Calibre dengan akses tulis atau token penyegerakan Kobo daripada Calibre-Web.",
+  "Enable Kobo sync in Calibre-Web, then copy the token from the Kobo sync URL in your profile.": "Dayakan penyegerakan Kobo dalam Calibre-Web, kemudian salin token daripada URL penyegerakan Kobo dalam profil anda."
 }

@@ -2626,7 +2626,6 @@
   "Connecting...": "সংযোগ করা হচ্ছে...",
   "Metadata and tags are imported from Calibre. Local edits are not sent to the server.": "মেটাডেটা এবং ট্যাগ Calibre থেকে আমদানি করা হয়। স্থানীয় সম্পাদনা সার্ভারে পাঠানো হয় না।",
   "Removed server books are marked unavailable; downloaded files and annotations are never deleted automatically.": "সার্ভার থেকে সরানো বই অনুপলব্ধ হিসেবে চিহ্নিত করা হয়; ডাউনলোড করা ফাইল এবং টীকা কখনো স্বয়ংক্রিয়ভাবে মুছে ফেলা হয় না।",
-  "EPUB reading-position sync requires a signed-in Calibre Content Server account with write access. Calibre-Web does not provide this API.": "EPUB পড়ার অবস্থান সিঙ্কের জন্য লেখার অনুমতিসহ সাইন-ইন করা একটি Calibre কনটেন্ট সার্ভার অ্যাকাউন্ট প্রয়োজন। Calibre-Web এই API প্রদান করে না।",
   "Use HTTPS on untrusted networks. HTTP sends your credentials without encryption.": "অবিশ্বস্ত নেটওয়ার্কে HTTPS ব্যবহার করুন। HTTP আপনার ক্রেডেনশিয়াল এনক্রিপশন ছাড়াই পাঠায়।",
   "Browser connections require the server to allow this site in its CORS policy. HTTPS pages cannot connect to an HTTP server. Use the native app for local servers.": "ব্রাউজার থেকে সংযোগের জন্য সার্ভারের CORS নীতিতে এই সাইটকে অনুমতি দিতে হবে। HTTPS পেজ HTTP সার্ভারের সাথে সংযোগ করতে পারে না। স্থানীয় সার্ভারের জন্য নেটিভ অ্যাপ ব্যবহার করুন।",
   "Calibre authentication failed. Check your credentials and permissions.": "Calibre প্রমাণীকরণ ব্যর্থ। আপনার ক্রেডেনশিয়াল এবং অনুমতি পরীক্ষা করুন।",
@@ -2649,5 +2648,8 @@
   "Sent to Calibre: {{sent}}": "Calibre-এ পাঠানো হয়েছে: {{sent}}",
   "Sending books to Calibre-Web requires the desktop or mobile app.": "Calibre-Web-এ বই পাঠাতে ডেস্কটপ বা মোবাইল অ্যাপ প্রয়োজন।",
   "Calibre-Web login failed. Check your credentials.": "Calibre-Web লগইন ব্যর্থ। আপনার ক্রেডেনশিয়াল পরীক্ষা করুন।",
-  "Calibre-Web uploads are off or this account cannot upload.": "Calibre-Web আপলোড বন্ধ আছে অথবা এই অ্যাকাউন্ট আপলোড করতে পারে না।"
+  "Calibre-Web uploads are off or this account cannot upload.": "Calibre-Web আপলোড বন্ধ আছে অথবা এই অ্যাকাউন্ট আপলোড করতে পারে না।",
+  "Kobo Sync Token": "Kobo সিঙ্ক টোকেন",
+  "EPUB reading-position sync requires a writable Calibre account or a Calibre-Web Kobo sync token.": "EPUB পড়ার অবস্থান সিঙ্ক করতে লেখার অনুমতিসহ Calibre অ্যাকাউন্ট অথবা Calibre-Web-এর Kobo সিঙ্ক টোকেন প্রয়োজন।",
+  "Enable Kobo sync in Calibre-Web, then copy the token from the Kobo sync URL in your profile.": "Calibre-Web-এ Kobo সিঙ্ক চালু করুন, তারপর আপনার প্রোফাইলের Kobo সিঙ্ক URL থেকে টোকেন কপি করুন।"
 }

@@ -255,6 +255,7 @@ describe('sanitizeSettingsForBackup - credentials', () => {
           libraryId: 'Library',
           username: 'reader',
           password: 'secret',
+          koboToken: '0123456789abcdef0123456789abcdef',
           enabled: true,
           syncProgress: true,
         },
@@ -266,6 +267,10 @@ describe('sanitizeSettingsForBackup - credentials', () => {
       uploadBooks: false,
     });
     expect(sanitizeSettingsForBackup(input).calibreServers?.[0]?.password).toBeUndefined();
+    expect(sanitizeSettingsForBackup(input).calibreServers?.[0]?.koboToken).toBeUndefined();
+    expect(
+      sanitizeSettingsForBackup(input, { includeCredentials: true }).calibreServers?.[0]?.koboToken,
+    ).toBe('0123456789abcdef0123456789abcdef');
     expect(
       sanitizeSettingsForBackup(input, { includeCredentials: true }).calibreServers?.[0]?.password,
     ).toBe('secret');

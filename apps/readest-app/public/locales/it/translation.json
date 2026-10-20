@@ -2692,7 +2692,6 @@
   "Connecting...": "Connessione in corso...",
   "Metadata and tags are imported from Calibre. Local edits are not sent to the server.": "Metadati e tag vengono importati da Calibre. Le modifiche locali non vengono inviate al server.",
   "Removed server books are marked unavailable; downloaded files and annotations are never deleted automatically.": "I libri rimossi dal server vengono contrassegnati come non disponibili; i file scaricati e le annotazioni non vengono mai eliminati automaticamente.",
-  "EPUB reading-position sync requires a signed-in Calibre Content Server account with write access. Calibre-Web does not provide this API.": "La sincronizzazione della posizione di lettura EPUB richiede un account del Server dei contenuti Calibre con accesso effettuato e permessi di scrittura. Calibre-Web non offre questa API.",
   "Use HTTPS on untrusted networks. HTTP sends your credentials without encryption.": "Usa HTTPS sulle reti non attendibili. HTTP invia le tue credenziali senza crittografia.",
   "Browser connections require the server to allow this site in its CORS policy. HTTPS pages cannot connect to an HTTP server. Use the native app for local servers.": "Le connessioni dal browser richiedono che il server consenta questo sito nella sua policy CORS. Le pagine HTTPS non possono connettersi a un server HTTP. Per i server locali usa l'app nativa.",
   "Calibre authentication failed. Check your credentials and permissions.": "Autenticazione Calibre non riuscita. Controlla le credenziali e i permessi.",
@@ -2715,5 +2714,8 @@
   "Sent to Calibre: {{sent}}": "Inviati a Calibre: {{sent}}",
   "Sending books to Calibre-Web requires the desktop or mobile app.": "L'invio di libri a Calibre-Web richiede l'app desktop o mobile.",
   "Calibre-Web login failed. Check your credentials.": "Accesso a Calibre-Web non riuscito. Controlla le credenziali.",
-  "Calibre-Web uploads are off or this account cannot upload.": "I caricamenti su Calibre-Web sono disattivati o questo account non può caricare."
+  "Calibre-Web uploads are off or this account cannot upload.": "I caricamenti su Calibre-Web sono disattivati o questo account non può caricare.",
+  "Kobo Sync Token": "Token di sincronizzazione Kobo",
+  "EPUB reading-position sync requires a writable Calibre account or a Calibre-Web Kobo sync token.": "La sincronizzazione della posizione di lettura EPUB richiede un account Calibre con accesso in scrittura o un token di sincronizzazione Kobo di Calibre-Web.",
+  "Enable Kobo sync in Calibre-Web, then copy the token from the Kobo sync URL in your profile.": "Abilita la sincronizzazione Kobo in Calibre-Web, quindi copia il token dall’URL di sincronizzazione Kobo nel tuo profilo."
 }

@@ -59,9 +59,11 @@ export const parseCalibreWebFeed = (xml: string): { books: CalibreBookRecord[]; 
       if (id === match[1]) formats.push(match[2]!);
     }
     if (!id) continue;
+    const uuid = text(entry, 'id').replace(/^urn:uuid:/i, '');
     const series = text(entry, 'content').match(/SERIES:\s*(.+?)\s*\[([\d.]+)\]/);
     books.push({
       id,
+      uuid: /^[\da-f]{8}(?:-[\da-f]{4}){3}-[\da-f]{12}$/i.test(uuid) ? uuid : undefined,
       title: text(entry, 'title') || _('Untitled'),
       authors: elements(entry, 'author')
         .map((author) => text(author, 'name'))
@@ -220,6 +222,7 @@ export const reconcileCalibreBooks = (
         serverId: server.id,
         libraryId: server.libraryId,
         bookId: record.id,
+        ...(record.uuid ? { uuid: record.uuid } : {}),
         formats: record.formats,
         modified: record.modified,
       },
